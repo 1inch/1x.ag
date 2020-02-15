@@ -14,7 +14,7 @@ function buildShedulerSecondsExpression(period) {
 
 cron.schedule(`${buildShedulerSecondsExpression(AVERAGE_BLOCK_TIME)} * * * * *`, () => {
     /*
-        1. Get open position events
+        1. Get open and closed position events. Find open without closed
         2. Fetch transactions
         3. Decode inputs
         4. Exclude repeated assets and fetch their prices
