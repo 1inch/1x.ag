@@ -73,6 +73,7 @@ jobs:
                             git push origin $TARGET_BRANCH
 
                             cd ..
+                            cd ..
 
                             node jobs/upload-ipfs.js
 
