@@ -31,16 +31,16 @@ export class BaseComponent implements OnInit {
     isMetaMask = false;
     isTrustWallet = false;
 
-    @ViewChild('walletAddressDropDown', {static: false})
+    @ViewChild('walletAddressDropDown')
     walletAddressDropDown: NgbDropdown;
 
-    @ViewChild('walletIconEl', {static: false})
+    @ViewChild('walletIconEl')
     walletIconEl: ElementRef;
 
-    @ViewChild('walletIconEl2', {static: false})
+    @ViewChild('walletIconEl2')
     walletIconEl2: ElementRef;
 
-    @ViewChild('connectTemplate', {static: false})
+    @ViewChild('connectTemplate')
     connectTemplate: TemplateRef<any>;
 
     connectInProgress = false;

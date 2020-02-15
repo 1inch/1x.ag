@@ -11,7 +11,7 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                loadChildren: './leverage/leverage.module#LeverageModule'
+                loadChildren: () => import('./leverage/leverage.module').then(m => m.LeverageModule)
             },
             {
                 path: 'how-it-works',

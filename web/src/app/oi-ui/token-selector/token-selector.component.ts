@@ -17,7 +17,7 @@ import {TokenPriceService} from '../../token-price.service';
 })
 export class TokenSelectorComponent implements OnInit {
 
-    @ViewChild('tokenDropDown', {static: false})
+    @ViewChild('tokenDropDown')
     tokenDropDown: NgbDropdown;
 
     tokenSearchResults: Observable<{}>;
