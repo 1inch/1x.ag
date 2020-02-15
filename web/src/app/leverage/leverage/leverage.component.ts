@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {of} from "rxjs";
-import {delay, tap} from "rxjs/operators";
-import {FormGroup} from "@angular/forms";
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-leverage',
-  templateUrl: './leverage.component.html',
-  styleUrls: ['./leverage.component.scss']
+    selector: 'app-leverage',
+    templateUrl: './leverage.component.html',
+    styleUrls: ['./leverage.component.scss']
 })
 export class LeverageComponent {
-  constructor() {
+    constructor() {
 
-  }
+    }
 }
