@@ -1,62 +1,28 @@
-
-<div (keydown)="onKeydown($event)" style="text-align: center; padding: 1.0em;">
-  <div class="full-width-container padding-rl-1">
-    <div style="display: flex; justify-content: space-between">
-      <div class="width-100">
-        <button (click)="back()" mat-button>
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
-      <div style="width: 300px !important; margin-left: -5.75em">
-        <h1 class="header">🔐</h1>
-        <h3 class="sub-header" style="width: 300px !important;">Create password</h3>
-      </div>
-      <div class="width-100"></div>
-    </div>
-    <p>Please choose a secure password for confirming your payments</p>
-  </div>
-  <br>
-  <div class="full-width-container">
-    <form [formGroup]="passwordForm" style="padding: 0">
-      <mat-form-field style="display: none">
-        <label>
-          <input autocomplete="username" formControlName="username" matInput placeholder="Enter your email"
-                 type="email">
-        </label>
-      </mat-form-field>
-      <mat-form-field>
-        <label>
-          <input (input)="onPasswordInput(); checkValid()" [type]="hide ? 'password' : 'text'"
-                 autocomplete="new-password"
-                 formControlName="password"
-                 matInput placeholder="Enter your password">
-        </label>
-        <button (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" mat-icon-button
-                matSuffix>
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field>
-        <label>
-          <input (input)="onPasswordInput(); checkValid()" [type]="hideRepeat ? 'password' : 'text'"
-                 autocomplete="new-password"
-                 formControlName="passwordRepeat"
-                 matInput placeholder="Repeat your password">
-        </label>
-        <button (click)="hideRepeat = !hideRepeat" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideRepeat"
-                mat-icon-button
-                matSuffix>
-          <mat-icon>{{hideRepeat ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-      </mat-form-field>
-      <div class="full-width-container padding-rl-1" style="padding-left: 3.3em; padding-right: 3.3em">
-        <div *ngIf="this.display">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Amount to send"
+                                   aria-label="Amount to send">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">MAX</button>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">Long</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Short</label>
+                        </div>
+                        <button class="btn btn-lg">Continue</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button (click)="generate()" [disabled]="!this.passwordsAreValid" color="primary" mat-flat-button>Continue
-        </button>
-      </div>
-
-    </form>
-  </div>
+    </div>
 </div>
