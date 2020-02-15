@@ -5,12 +5,36 @@
                 <div class="card-header text-center">
                     <h5>My positions</h5>
                 </div>
-                <div class="card-body p-4">
                     <div class="input-group">
-                        <div class="card-body p-4">
+                        <div class="card-body ">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Leverage Token</th>
+                                    <th scope="col">Profit</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Stop Loss</th>
+                                    <th scope="col">Stop Win</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let position of positions">
+                                    <td>{{position.tokenName}}</td>
+                                    <td>{{position.profit}}</td>
+                                    <td>{{position.status}}</td>
+                                    <td>{{position.stopLoss}}</td>
+                                    <td>{{position.stopWin}}</td>
+                                    <td>
+                                        <button (click)="operate(position)" class="btn btn-danger btn-sm">
+                                            delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
