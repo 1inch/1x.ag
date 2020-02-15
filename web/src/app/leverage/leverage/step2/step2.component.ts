@@ -6,9 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./step2.component.scss']
 })
 export class Step2Component implements OnInit {
-
+  radioModel = '';
   constructor() { }
-
   ngOnInit() {
   }
 
