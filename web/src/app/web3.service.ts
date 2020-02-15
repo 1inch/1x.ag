@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConfigurationService } from './configuration.service';
 
 import { createAlchemyWeb3 } from '@alch/alchemy-web3';
+import Jazzicon from 'jazzicon';
 
 import Web3 from 'web3';
 import { Subject } from 'rxjs';
@@ -32,6 +33,8 @@ export class Web3Service {
     public walletAddresses = [];
     public walletBalances = [];
     public walletEns = '';
+    public walletIcon = null;
+    public walletIconSmall = null;
     public rpcUrl = 'https://alchemy.1inch.exchange';
 
     connectEvent = new Subject<any>();
@@ -115,32 +118,8 @@ export class Web3Service {
         if (this.txProviderName) {
 
             switch (this.txProviderName) {
-                case 'portis':
-
-                    break;
                 case 'fortmatic':
                     this.thirdPartyProvider.user.logout();
-                    break;
-                case 'ledger':
-                    this.thirdPartyProvider.stop();
-                    break;
-                case 'walletlink':
-                    this.thirdPartyProvider.disconnect();
-                    break;
-                case 'squarelink':
-
-                    break;
-                case 'torus':
-                    window.location.reload();
-                    break;
-                case 'wallet-connect':
-                    try {
-
-                        const walletConnector = await this.thirdPartyProvider.getWalletConnector();
-                        await walletConnector.killSession();
-                        await this.thirdPartyProvider.stop();
-                    } catch (e) {
-                    }
                     break;
                 case 'metamask':
                 default:
@@ -161,6 +140,7 @@ export class Web3Service {
         this.txProvider = null;
         this.txProviderName = '';
         this.walletAddress = '';
+        this.walletIcon = null;
         this.walletAddresses = [];
         this.walletBalances = [];
         this.walletEns = '';
@@ -214,6 +194,8 @@ export class Web3Service {
     async setWalletAddress(value) {
 
         this.walletAddress = value;
+        this.walletIconSmall = Jazzicon(16, parseInt(this.walletAddress.slice(2, 10), 16));
+        this.walletIcon = Jazzicon(32, parseInt(this.walletAddress.slice(2, 10), 32));
         localStorage.setItem('walletAddress', this.walletAddress);
 
         try {

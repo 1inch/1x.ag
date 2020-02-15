@@ -1,0 +1,16 @@
+<small (click)="setTokenAmount()"
+       class="form-text text-muted text-left position-relative mb-1 tokenBalance"
+       style="margin-top: -23px; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+    Max: {{maxTokenBalance}}
+</small>
+<input [formControl]="tokenAmountControl"
+       aria-describedby="tokenBalance" autocomplete="off"
+       class="form-control text-right" [id]="id"
+       [name]="name"
+       numeric numericType="decimal" pattern="[0-9\.]*"
+       type="text">
+<small class="form-text text-right text-info"
+       id="tokenCost">
+    <span *ngIf="tokenUsdCost">≈ {{tokenUsdCostView}}</span>
+    <span *ngIf="!tokenUsdCost">&nbsp;</span>
+</small>

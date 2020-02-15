@@ -1,0 +1,55 @@
+<div #tokenDropDown="ngbDropdown" ngbDropdown *ngIf="tokens[token]">
+    <button
+        class="btn btn-block btn-outline-secondary text-left is-flex token-dropdown"
+        ngbDropdownToggle
+        type="button"
+    >
+        <span>
+            <img [src]="'assets/tokens/' + tokens[token].address.toLowerCase() + '.png'"
+                 class="mr-1"
+                 onerror="this.src = 'assets/tokens/token.png';">
+
+            {{token}}
+        </span>
+    </button>
+    <div aria-labelledby="tokenDropdown" ngbDropdownMenu>
+
+        <div class="p-2 border-bottom">
+
+            <input #tokenSearchField [formControl]="tokenSearchControl"
+                   autocomplete="off"
+                   class="form-control border-0 tokenSearch"
+                   placeholder='Try "DAI"' type="search">
+        </div>
+
+        <div class="tokenScrollArea">
+            <div class="p-2">
+
+                <ul class="list-group list-group-flush">
+                    <li (click)="setToken(token)"
+                        *ngFor="let token of tokenSearchResults | async"
+                        class="list-group-item">
+                        <img
+                            [src]="'assets/tokens/' + token.address.toLowerCase() + '.png'"
+                            class="mr-1"
+                            onerror="this.src = 'assets/tokens/token.png';"
+                        >
+
+                        {{token.symbol}}
+                        <br>
+                        <span
+                            *ngIf="token['formatedTokenBalance'] > 0"
+                            class="text-secondary"
+                        >
+                            <span *ngIf="token['formatedUSD']">
+                                {{token['formatedUSD']}}<br>
+                            </span>
+                            {{token['formatedTokenBalance']}}
+                        </span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

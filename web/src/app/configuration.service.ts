@@ -7,6 +7,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ConfigurationService {
 
+    public ONE_SPLIT_CONTRACT_ADDRESS = '0xDFf2AA5689FCBc7F479d8c84aC857563798436DD';
+    public TOKEN_HELPER_CONTRACT_ADDRESS = '0x1ed7221c4a43632e3ed491a8a28bbebd0b450ad8';
+    public ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
+
+    public CONTRACT_ENS = '1xAggregator.eth';
+
     public GAS_PRICE_URL = 'http://gas-price.api.enterprise.1inch.exchange';
     public GAS_PRICE_URL2 = 'https://gasprice.poa.network';
     public CORS_PROXY_URL = 'https://corsproxy.1inch.exchange/';
