@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1581775110472,
+  "timestamp": 1581776652349,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -8,8 +8,8 @@
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
-        "/5-es2015.a19ebc2872b8b871833e.js",
-        "/5-es5.a19ebc2872b8b871833e.js",
+        "/5-es2015.d926b7a149081bae3d7a.js",
+        "/5-es5.d926b7a149081bae3d7a.js",
         "/favicon.ico",
         "/index.html",
         "/main-es2015.82384f15a09bae9bee5f.js",
@@ -17,8 +17,8 @@
         "/manifest.webmanifest",
         "/polyfills-es2015.8c41daa32bc9f46a9b31.js",
         "/polyfills-es5.d8f2433fe2f825547215.js",
-        "/runtime-es2015.f46cf8f5bf1a862426cf.js",
-        "/runtime-es5.f46cf8f5bf1a862426cf.js",
+        "/runtime-es2015.80f8d85dd8e015ffa72f.js",
+        "/runtime-es5.80f8d85dd8e015ffa72f.js",
         "/styles.9c7aac2a3ece00f8b10b.css"
       ],
       "patterns": []
@@ -3700,8 +3700,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/5-es2015.a19ebc2872b8b871833e.js": "e0511376160ee1750b2dcd07944e07e2819ada2c",
-    "/5-es5.a19ebc2872b8b871833e.js": "2980349602be0781ed9fefc3021586c725ccaec9",
+    "/5-es2015.d926b7a149081bae3d7a.js": "c8014a3cfc072d8ad36bb7cd35b0b4c5fd53139c",
+    "/5-es5.d926b7a149081bae3d7a.js": "067fe6314e684554f8fc2249cde4482376d307e3",
     "/assets/cryptomaniacs.png": "550cf4c6ce74f53a3d5f975f3a0b033bda6de8f8",
     "/assets/ethereum-white.png": "5111f74787b6075ff8b7a17d6b1761d9ac3ae73d",
     "/assets/ethereum.png": "18cde2f547f56bb9609823892395f971e02896be",
@@ -7369,14 +7369,14 @@
     "/assets/tokens/token.png": "162fed27a5e3d2a26e33a5a99cc1d4735ee65aed",
     "/assets/trust-wallet.png": "7fcf5ba66868259c8ddb9526ff15999f62ec25c2",
     "/favicon.ico": "6569ddcfa1a6e423724e352aa830eadb6f42dd9e",
-    "/index.html": "14c6158dfd529b54837b115c766ddb878ec857f6",
+    "/index.html": "a26f6ecbb3723136fc2e12a0319b6a9b84215597",
     "/main-es2015.82384f15a09bae9bee5f.js": "48290639d004bf3dccadcb7660f4c38523379192",
     "/main-es5.82384f15a09bae9bee5f.js": "771dddf6db32c25e3c9e8ef125fcf35392a9b5ed",
     "/manifest.webmanifest": "c92d7dc3616fe94626656601a4c1cf0a5e9fc359",
     "/polyfills-es2015.8c41daa32bc9f46a9b31.js": "e90439469bd89c9eac5d0ae82fa3d245e1a6e785",
     "/polyfills-es5.d8f2433fe2f825547215.js": "572eb09bf2438339fd94f8b79e647638d184d933",
-    "/runtime-es2015.f46cf8f5bf1a862426cf.js": "9d1d6581d596f9e0a358ae219a2dbae4afbb6bd9",
-    "/runtime-es5.f46cf8f5bf1a862426cf.js": "8855aa706307c7308bd0968d991c0d4b24b5b413",
+    "/runtime-es2015.80f8d85dd8e015ffa72f.js": "8f4072001d23ea2ca418475ea421c0ec72f5370c",
+    "/runtime-es5.80f8d85dd8e015ffa72f.js": "d293dd838bea466aad6505417b7183c0d6cc9a92",
     "/styles.9c7aac2a3ece00f8b10b.css": "80591a9da046c7672eeaf8ee895bcd1e44130139"
   },
   "navigationUrls": [
