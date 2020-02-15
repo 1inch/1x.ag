@@ -89,6 +89,9 @@ export class CreatePositionComponent implements OnInit {
         '3x';
 
     loading = true;
+    transactionHash = '';
+    error = false;
+    done = false;
 
     get leverageModel() {
 
