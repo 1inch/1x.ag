@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 
-const AVARAGE_BLOCK_TIME = 14;
+const AVERAGE_BLOCK_TIME = 14;
 
 function buildShedulerSecondsExpression(period) {
     const seconds = [];
@@ -12,7 +12,7 @@ function buildShedulerSecondsExpression(period) {
     return seconds.join(",");
 }
 
-cron.schedule(`${buildShedulerSecondsExpression(AVARAGE_BLOCK_TIME)} * * * * *`, () => {
+cron.schedule(`${buildShedulerSecondsExpression(AVERAGE_BLOCK_TIME)} * * * * *`, () => {
     /*
         1. Get open position events
         2. Fetch transactions
