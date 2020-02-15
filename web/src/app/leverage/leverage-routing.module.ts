@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LeverageComponent } from './leverage/leverage.component';
-import { Step1Component } from './leverage/step1/step1.component';
+import { CreatePositionComponent } from './leverage/create-position/create-position.component';
+import {MyPositionsComponent} from './leverage/my-positions/my-positions.component';
 
 const routes: Routes = [
     {
@@ -10,7 +11,11 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                component: Step1Component
+                component: CreatePositionComponent
+            },
+            {
+                path: 'positions',
+                component: MyPositionsComponent
             },
         ]
     }

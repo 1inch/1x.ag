@@ -75,6 +75,11 @@
                    routerLink="/">MARGIN</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link pl-3 pr-3" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{exact: true}"
+                   routerLink="/positions">MY POSITIONS</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link pl-3 pr-3" routerLinkActive="active" routerLink="/how-it-works">HOW IT WORKS</a>
             </li>
         </ul>
@@ -140,6 +145,9 @@
     <ul class="nav justify-content-center">
         <li class="nav-item">
             <a class="nav-link" routerLink="/">Margin</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/positions">My positions</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" routerLink="/how-it-works">How it works</a>

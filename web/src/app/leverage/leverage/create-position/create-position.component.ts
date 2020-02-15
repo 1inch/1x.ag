@@ -8,10 +8,10 @@ import {faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: 'app-step1',
-    templateUrl: './step1.component.html',
-    styleUrls: ['./step1.component.scss']
+    templateUrl: './create-position.component.html',
+    styleUrls: ['./create-position.component.scss']
 })
-export class Step1Component implements OnInit {
+export class CreatePositionComponent implements OnInit {
 
     formGroup = new FormGroup({});
     marked = false;
