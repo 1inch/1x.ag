@@ -9,6 +9,8 @@ jobs:
             -   SOURCE_BRANCH: master
             -   TARGET_BRANCH: gh-pages
             -   CNAME: 1x.ag
+            -   GH_EMAIL: ci@1x.ag
+            -   GH_NAME: ci
         steps:
             - checkout
             -   restore_cache:
