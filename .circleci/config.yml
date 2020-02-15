@@ -13,8 +13,8 @@ jobs:
             -   GH_NAME: ci
         steps:
             - checkout
-                  -   restore_cache:
-                  keys: 
+            -   restore_cache:
+                  keys:
                       - dependencies-{{ checksum "web/package.json" }}
             -   run:
                     name: Install base dependencies
