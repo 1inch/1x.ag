@@ -1,6 +1,4 @@
-# OneX
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+# 1x.ag
 
 ## Development server
 

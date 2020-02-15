@@ -1,2 +1,5 @@
 # 1x.ag
-Leverage aggregator
+Leverage aggregator usign Compound, Fulcrum, Aave, Lendroid and MakerDAO.
+
+
+
