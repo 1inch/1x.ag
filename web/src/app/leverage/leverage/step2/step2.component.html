@@ -9,21 +9,46 @@
                     <h5 class="text-center">Pick your leverage</h5>
                     <div class="pt-4 text-center">
                         <div class="btn-group" btnRadioGroup [(ngModel)]="radioModel">
-                            <label class="btn btn-info" btnRadio="1x"
-                                   tabindex="0" role="button">1x</label>
-                            <label class="btn btn-info" btnRadio="2x"
-                                   tabindex="0" role="button">2x</label>
-                            <label class="btn btn-info" btnRadio="3x"
-                                   tabindex="0" role="button">3x</label>
-                            <label class="btn btn-info" btnRadio="4x"
-                                   tabindex="0" role="button">4x</label>
-                            <label class="btn btn-info" btnRadio="5x"
-                                   tabindex="0" role="button">5x</label>
+                            <label class="btn btn-info round" btnRadio="1x"
+                                   tabindex="0" role="button">1X</label>
+                            <label class="btn btn-info round" btnRadio="2x"
+                                   tabindex="0" role="button">2X</label>
+                            <label class="btn btn-info round" btnRadio="3x"
+                                   tabindex="0" role="button">3X</label>
+                            <label class="btn btn-info round" btnRadio="4x"
+                                   tabindex="0" role="button">4X</label>
+                            <label class="btn btn-info round" btnRadio="5x"
+                                   tabindex="0" role="button">5X</label>
+                        </div>
+                    </div>
+                    <div class="row pt-4 ml-4 mr-4">
+                        <div class="col-4 mt-2">Stop loss</div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Amount"
+                                       aria-label="Amount">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-4 ml-4 mr-4">
+                        <div class="col-4 mt-2">Stop win</div>
+                        <div class="col-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Amount"
+                                       aria-label="Amount">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 text-center pt-4">
                         <button class="btn btn-lg btn-success">Continue</button>
                     </div>
+
                 </div>
             </div>
         </div>
