@@ -10,37 +10,47 @@
             <h5>My Positions</h5>
         </div>
         <div class="card-body p-0 pl-md-4 pr-md-4 pb-md-3 pt-3">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Leverage Token</th>
-                    <th scope="col">Leverage</th>
-                    <th scope="col">Profit</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Stop Loss</th>
-                    <th scope="col">Take Profit</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let position of positions">
-                    <td>{{position.tokenName}}</td>
-                    <td>{{position.leverageModel}}x</td>
-                    <td>{{position.profit}}</td>
-                    <td>{{position.status}}</td>
-                    <td>{{position.stopLoss}}</td>
-                    <td>{{position.stopWin}}</td>
-                    <td>
-                        <button (click)="operate(position)" class="btn btn-success btn-sm mr-1">
-                            chart
-                        </button>
-                        <button (click)="operate(position)" class="btn btn-danger btn-sm">
-                            liquidate
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Leverage Token</th>
+                        <th scope="col">Leverage</th>
+                        <th scope="col">Profit</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Stop Loss</th>
+                        <th scope="col">Take Profit</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let position of positions">
+                        <td>{{position.tokenName}}</td>
+                        <td>{{position.leverageModel}}x</td>
+                        <td>{{position.profit}}</td>
+                        <td>{{position.status}}</td>
+                        <td>{{position.stopLoss}}</td>
+                        <td>{{position.stopWin}}</td>
+                        <td>
+                            <button (click)="operate(position,template)" class="btn btn-success btn-sm mr-1">
+                                chart
+                            </button>
+                            <button (click)="operate(position,template)" class="btn btn-danger btn-sm">
+                                liquidate
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ng-template #template>
+                <div class="modal-body text-center p-4">
+                    <p>Do you want to confirm?</p>
+                    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>
