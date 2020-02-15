@@ -585,6 +585,30 @@ export class TokenService {
         });
     }
 
+    async getTokenHelperContract(): Promise<any> {
+
+        return new Promise((resolve, reject) => {
+
+            setTimeout(reject, 300000);
+
+            const check = () => {
+
+                if (this.tokenHelperContract) {
+
+                    resolve(this.tokenHelperContract);
+                    return;
+                }
+
+                setTimeout(() => {
+
+                    check();
+                }, 100);
+            };
+
+            check();
+        });
+    }
+
     parseAsset(symbol: string, amount): BigNumber {
 
         if (symbol === 'ETH') {
@@ -709,7 +733,8 @@ export class TokenService {
             );
         } else {
 
-            const contract = new this.web3Service.web3Provider.eth.Contract(
+            const contract = new (await this.web3Service.getWeb3Provider()).eth.Contract(
+                // @ts-ignore
                 ERC20ABI,
                 this.tokens[symbol].address
             );
@@ -770,7 +795,8 @@ export class TokenService {
             return true;
         }
 
-        const contract = new this.web3Service.web3Provider.eth.Contract(
+        const contract = new (await this.web3Service.getWeb3Provider()).eth.Contract(
+            // @ts-ignore
             ERC20ABI,
             this.tokens[tokenSymbol].address
         );
@@ -922,8 +948,7 @@ export class TokenService {
 
         do {
 
-            promises.push(
-                await this.tokenHelperContract.methods.balancesOfTokens(
+            promises.push(await (await this.getTokenHelperContract()).methods.balancesOfTokens(
                     userWalletAddress,
                     addresses.slice(index, index + step),
                     this.configurationService.ONE_SPLIT_CONTRACT_ADDRESS
