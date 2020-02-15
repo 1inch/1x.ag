@@ -8,6 +8,8 @@ import {ButtonsModule, TooltipModule} from 'ngx-bootstrap';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {OiUiModule} from '../oi-ui/oi-ui.module';
 import {MyPositionsComponent} from './leverage/my-positions/my-positions.component';
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import {MyPositionsComponent} from './leverage/my-positions/my-positions.compone
         FontAwesomeModule,
         TooltipModule.forRoot(),
         OiUiModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        LoadingSpinnerModule,
+        NgbAlertModule
     ]
 })
 export class LeverageModule {
