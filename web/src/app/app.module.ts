@@ -16,12 +16,14 @@ import { NgbModule, NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularPageVisibilityModule } from 'angular-page-visibility';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HowItWorksComponent } from './how-it-works/how-it-works.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BaseComponent,
-        NoContentComponent
+        NoContentComponent,
+        HowItWorksComponent
     ],
     imports: [
         BrowserAnimationsModule,
