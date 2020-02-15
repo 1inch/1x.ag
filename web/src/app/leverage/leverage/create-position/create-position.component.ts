@@ -19,12 +19,34 @@ export class CreatePositionComponent implements OnInit {
     marginToken = localStorage.getItem('leverageMarginToken') ?
         localStorage.getItem('leverageMarginToken') :
         'ETH';
+
     payToken = localStorage.getItem('leveragePayToken') ?
         localStorage.getItem('leveragePayToken') :
         'DAI';
+
     info = faInfoCircle;
     gasPrice;
     tokenBlackList = [];
+
+    liquidityProviders = [
+        {
+            name: 'Compound',
+            icon: 'assets/compound-v2.svg'
+        },
+        {
+            name: 'Aave',
+            icon: 'assets/aave.png'
+        },
+        {
+            name: 'MakerDAO',
+            icon: 'assets/makerdao.svg'
+        },
+        {
+            name: '(bZx) Fulcrum',
+            icon: 'assets/fulcrum.png'
+        }
+    ];
+
     marginTokenList = [
         'ETH',
         'DAI',
@@ -32,13 +54,16 @@ export class CreatePositionComponent implements OnInit {
         'ZRX',
         'MKR'
     ];
-    _positionModel = localStorage.getItem('leveragePositionModel') ?
-        localStorage.getItem('leveragePositionModel') :
-        'long';
+
     loading = true;
     transactionHash = '';
     error = false;
     done = false;
+
+    liquidityProvider = localStorage.getItem('leverageLiquidityProvider') ?
+        this.liquidityProviders.filter(provider => provider.name ===
+            localStorage.getItem('leverageLiquidityProvider'))[0] :
+        this.liquidityProviders.filter(provider => provider.name === 'Compound')[0];
 
     constructor(
         public configurationService: ConfigurationService,
@@ -155,5 +180,11 @@ export class CreatePositionComponent implements OnInit {
             this.done = true;
             this.transactionHash = '0x5565dc0631e50b776ebef819cb334093b6f1f102772d084f95e580523825cdcd';
         }, 10000);
+    }
+
+    onLiquidityProviderSelect($event: any) {
+
+        this.liquidityProvider = $event;
+        localStorage.setItem('leverageLiquidityProvider', $event.name);
     }
 }

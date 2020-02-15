@@ -1,0 +1,43 @@
+<div #optionDropDown="ngbDropdown" ngbDropdown>
+    <button
+        class="btn btn-block btn-outline-secondary text-left is-flex option-dropdown"
+        ngbDropdownToggle
+        type="button"
+    >
+        <span>
+            <img [src]="option.icon"
+                 class="mr-1">
+
+            {{option.name}}
+        </span>
+    </button>
+    <div aria-labelledby="optionDropDown" ngbDropdownMenu>
+
+        <div class="p-2 border-bottom">
+
+            <input #optionSearchField [formControl]="optionSearchControl"
+                   autocomplete="off"
+                   class="form-control border-0 optionSearch"
+                   placeholder='' type="search">
+        </div>
+
+        <div class="optionscrollArea">
+            <div class="p-2">
+
+                <ul class="list-group list-group-flush">
+                    <li (click)="setOption(option)"
+                        *ngFor="let option of options"
+                        class="list-group-item" style="white-space: nowrap;">
+                        <img
+                            [src]="option.icon"
+                            class="mr-1"
+                        >
+
+                        {{option.name}}
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
