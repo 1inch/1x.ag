@@ -9,7 +9,7 @@
         <div class="card-header text-center">
             <h5>Create position</h5>
         </div>
-        <div class="card-body p-0 pl-md-4 pr-md-4 pb-md-3 pt-3">
+        <div class="card-body p-2 pl-md-4 pr-md-4 pb-md-3 pt-3">
 
             <app-loading-spinner *ngIf="loading"></app-loading-spinner>
 
@@ -29,111 +29,94 @@
                         problem.
                     </ngb-alert>
                 </div>
-            </div>
-            <!--                            <form [formGroup]="formGroup" novalidate>-->
-            <div class="form-row justify-content-between field-labels d-none d-md-flex">
-                <div class="form-group col-md-3 mb-1">
-                    Leverage Token:
-                </div>
-                <div class="form-group col-md-3 mb-1">
-                    Pay Token:
-                </div>
-            </div>
-            <div class="form-row border-bottom mb-3">
-                <div class="form-group col-12 col-md-3">
-                    <oi-token-selector
-                        id="marginToken"
-                        [token]="marginToken"
-                        [tokenBlackList]="tokenBlackList"
-                        [tokenSpender]="tokenSpender"
-                        (onTokenSelect)="onMarginTokenSelect($event)"
-                    ></oi-token-selector>
-                </div>
-                <div class="form-group col-12 col-md-6 pt-3 pt-md-0">
-                    <oi-token-amount-field
-                        id="amount"
-                        name="amount"
-                        [token]="payToken"
-                        [(tokenAmountBN)]="amountBN"
-                        [gasPrice]="gasPrice"
-                    ></oi-token-amount-field>
-                </div>
-                <div class="form-group col-12 col-md-3">
-                    <oi-token-selector
-                        id="fromToken"
-                        [token]="payToken"
-                        [tokenSpender]="tokenSpender"
-                        (onTokenSelect)="onPayTokenSelect($event)"
-                    ></oi-token-selector>
-                </div>
-            </div>
-            <div class="pt-4 text-center">
-                <div class="btn-group" btnRadioGroup [(ngModel)]="positionModel">
-                    <label class="btn btn-info" btnRadio="short"
-                           tabindex="0" role="button">Short</label>
-                    <label class="btn btn-info" btnRadio="long"
-                           tabindex="0" role="button">Long</label>
-                </div>
-            </div>
-            <h5 class="text-center pt-3">Pick your leverage</h5>
-            <div class="pt-3 text-center">
-                <div class="btn-group" btnRadioGroup [(ngModel)]="leverageModel">
-                    <label class="btn btn-info round" btnRadio="2x"
-                           tabindex="0" role="button">2X</label>
-                    <label class="btn btn-info round" btnRadio="3x"
-                           tabindex="0" role="button">3X</label>
-                    <label class="btn btn-info round" btnRadio="4x"
-                           tabindex="0" role="button">4X</label>
-                    <label class="btn btn-info round" btnRadio="5x"
-                           tabindex="0" role="button">5X</label>
-                </div>
-            </div>
-            <div class="form-check text-center pt-3">
-                <input class="form-check-input" type="checkbox" value="" id="botActivate"
-                       [(ngModel)]="useT800SaveBot" data-md-icheck (change)="toggleVisibility($event)"
-                       (click)="toggleVisibility($event)">
-                <label class="form-check-label" for="botActivate">
-                    Use T-800 liquidation save bot
-                </label>
-            </div>
-            <div *ngIf="useT800SaveBot">
-                <div class="row pt-4 ml-md-4 mr-md-4">
-                    <div class="col-4 col-xs-12 mt-2">Stop loss at
-                        <fa-icon class="upper"
-                                 [icon]="info"
-                                 tooltip="Lowest price which will trigger closing position"></fa-icon>
+                <!--                            <form [formGroup]="formGroup" novalidate>-->
+                <div class="form-row justify-content-between field-labels d-none d-md-flex">
+                    <div class="form-group col-md-3 mb-1">
+                        Leverage Token:
                     </div>
-                    <div class="col-8 col-xs-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="in %"
+                    <div class="form-group col-md-3 mb-1">
+                        Pay Token:
+                    </div>
+                </div>
+                <div class="form-row border-bottom mb-3">
+                    <div class="form-group col-12 col-md-3">
+                        <oi-token-selector
+                            id="marginToken"
+                            [token]="marginToken"
+                            [tokenBlackList]="tokenBlackList"
+                            [tokenSpender]="tokenSpender"
+                            (onTokenSelect)="onMarginTokenSelect($event)"
+                        ></oi-token-selector>
+                    </div>
+                    <div class="form-group col-12 col-md-6 pt-3 pt-md-0">
+                        <oi-token-amount-field
+                            id="amount"
+                            name="amount"
+                            [token]="payToken"
+                            [(tokenAmountBN)]="amountBN"
+                            [gasPrice]="gasPrice"
+                        ></oi-token-amount-field>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <oi-token-selector
+                            id="fromToken"
+                            [token]="payToken"
+                            [tokenBlackList]="tokenBlackList"
+                            [tokenSpender]="tokenSpender"
+                            (onTokenSelect)="onPayTokenSelect($event)"
+                        ></oi-token-selector>
+                    </div>
+                </div>
+                <h5 class="text-center pt-3">Pick your leverage</h5>
+                <div class="pt-3 text-center">
+                    <div class="btn-group" btnRadioGroup [(ngModel)]="leverageModel">
+                        <label class="btn btn-info round" btnRadio="2"
+                               tabindex="0" role="button">2X</label>
+                        <label class="btn btn-info round" btnRadio="3"
+                               tabindex="0" role="button">3X</label>
+                        <label class="btn btn-info round" btnRadio="4"
+                               tabindex="0" role="button">4X</label>
+                        <label class="btn btn-info round" btnRadio="5"
+                               tabindex="0" role="button">5X</label>
+                    </div>
+                </div>
+                <div class="form-check text-center pt-3">
+                    <input class="form-check-input" type="checkbox" value="" id="botActivate"
+                           [(ngModel)]="useT800SaveBot" data-md-icheck (change)="toggleVisibility($event)"
+                           (click)="toggleVisibility($event)">
+                    <label class="form-check-label" for="botActivate">
+                        Use T-800 liquidation save bot
+                    </label>
+                </div>
+                <div *ngIf="useT800SaveBot">
+                    <div class="row pt-4 ml-md-4 mr-md-4">
+                        <div class="col-4 col-xs-12 mt-2">Stop loss at
+                            <fa-icon class="upper"
+                                     [icon]="info"
+                                     tooltip="Lowest price which will trigger closing position"></fa-icon>
+                        </div>
+                        <div class="col-8 col-xs-12">
+                            <input type="text" class="form-control" [(ngModel)]="stopLossLimit" placeholder="in %"
                                    aria-label="Amount">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">MAX</button>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-4 ml-md-4 mr-md-4">
+                        <div class="col-4 col-xs-12 mt-2">Take profit at
+                            <fa-icon class="upper"
+                                     [icon]="info"
+                                     tooltip="Highest price which will trigger closing position"></fa-icon>
+                        </div>
+                        <div class="col-8 col-xs-12">
+                            <input type="text" class="form-control" [(ngModel)]="takeProfitLimit" placeholder="in %"
+                                   aria-label="Amount">
                         </div>
                     </div>
                 </div>
-                <div class="row pt-4 ml-md-4 mr-md-4">
-                    <div class="col-4 col-xs-12 mt-2">Take profit at
-                        <fa-icon class="upper"
-                                 [icon]="info"
-                                 tooltip="Highest price which will trigger closing position"></fa-icon>
-                    </div>
-                    <div class="col-8 col-xs-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="in %"
-                                   aria-label="Amount">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">MAX</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-12 text-center pt-4">
+                    <button class="btn btn-lg btn-success" (click)="create()">Create</button>
                 </div>
+                <!--                            </form>-->
             </div>
-            <div class="col-12 text-center pt-4">
-                <button class="btn btn-lg btn-success">Continue</button>
-            </div>
-            <!--                            </form>-->
         </div>
     </div>
 </div>

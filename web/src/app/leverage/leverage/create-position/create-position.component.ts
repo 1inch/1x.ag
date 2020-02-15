@@ -15,13 +15,10 @@ export class CreatePositionComponent implements OnInit {
 
     formGroup = new FormGroup({});
     marked = false;
-    _useT800SaveBot =  localStorage.getItem('leverageUseT800SaveBot') === '1' || !localStorage.getItem('leverageUseT800SaveBot');
     tokenSpender = '0x0000000000000000000000000000000000000000';
-
     marginToken = localStorage.getItem('leverageMarginToken') ?
         localStorage.getItem('leverageMarginToken') :
         'ETH';
-
     payToken = localStorage.getItem('leveragePayToken') ?
         localStorage.getItem('leveragePayToken') :
         'DAI';
@@ -35,6 +32,13 @@ export class CreatePositionComponent implements OnInit {
         'ZRX',
         'MKR'
     ];
+    _positionModel = localStorage.getItem('leveragePositionModel') ?
+        localStorage.getItem('leveragePositionModel') :
+        'long';
+    loading = true;
+    transactionHash = '';
+    error = false;
+    done = false;
 
     constructor(
         public configurationService: ConfigurationService,
@@ -43,9 +47,37 @@ export class CreatePositionComponent implements OnInit {
     ) {
     }
 
-    _amountBN = localStorage.getItem('leverageAmountBN') ?
-        ethers.utils.bigNumberify(localStorage.getItem('leverageAmountBN')) :
-        ethers.utils.bigNumberify(1e9).mul(1e9).mul(1000);
+    _stopLossLimit = localStorage.getItem('leverageStopLossLimit') ?
+        localStorage.getItem('leverageStopLossLimit') :
+        '';
+
+    get stopLossLimit() {
+
+        return this._stopLossLimit;
+    }
+
+    set stopLossLimit(value) {
+
+        this._stopLossLimit = value;
+        localStorage.setItem('leverageStopLossLimit', value);
+    }
+
+    _takeProfitLimit = localStorage.getItem('leverageTakeProfitLimit') ?
+        localStorage.getItem('leverageTakeProfitLimit') :
+        '';
+
+    get takeProfitLimit() {
+
+        return this._takeProfitLimit;
+    }
+
+    set takeProfitLimit(value) {
+
+        this._takeProfitLimit = value;
+        localStorage.setItem('leverageTakeProfitLimit', value);
+    }
+
+    _useT800SaveBot = localStorage.getItem('leverageUseT800SaveBot') === '1' || !localStorage.getItem('leverageUseT800SaveBot');
 
     get useT800SaveBot() {
 
@@ -58,6 +90,10 @@ export class CreatePositionComponent implements OnInit {
         localStorage.setItem('leverageUseT800SaveBot', value ? '1' : '0');
     }
 
+    _amountBN = localStorage.getItem('leverageAmountBN') ?
+        ethers.utils.bigNumberify(localStorage.getItem('leverageAmountBN')) :
+        ethers.utils.bigNumberify(1e9).mul(1e9).mul(1000);
+
     get amountBN() {
 
         return this._amountBN;
@@ -69,29 +105,9 @@ export class CreatePositionComponent implements OnInit {
         localStorage.setItem('leverageAmountBN', this._amountBN.toString());
     }
 
-    _positionModel = localStorage.getItem('leveragePositionModel') ?
-        localStorage.getItem('leveragePositionModel') :
-        'long';
-
-    get positionModel() {
-
-        return this._positionModel;
-    }
-
-    set positionModel(value) {
-
-        this._positionModel = value;
-        localStorage.setItem('leveragePositionModel', value);
-    }
-
     _leverageModel = localStorage.getItem('leverageLeverageModel') ?
         localStorage.getItem('leverageLeverageModel') :
-        '3x';
-
-    loading = true;
-    transactionHash = '';
-    error = false;
-    done = false;
+        '3';
 
     get leverageModel() {
 
@@ -127,5 +143,17 @@ export class CreatePositionComponent implements OnInit {
 
     toggleVisibility(e) {
         this.marked = e.target.checked;
+    }
+
+    create() {
+
+        this.loading = true;
+
+        setTimeout(() => {
+
+            this.loading = false;
+            this.done = true;
+            this.transactionHash = '0x5565dc0631e50b776ebef819cb334093b6f1f102772d084f95e580523825cdcd';
+        }, 10000);
     }
 }

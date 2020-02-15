@@ -14,7 +14,6 @@
                 <thead>
                 <tr>
                     <th scope="col">Leverage Token</th>
-                    <th scope="col">Position</th>
                     <th scope="col">Leverage</th>
                     <th scope="col">Profit</th>
                     <th scope="col">Status</th>
@@ -26,8 +25,7 @@
                 <tbody>
                 <tr *ngFor="let position of positions">
                     <td>{{position.tokenName}}</td>
-                    <td>{{position.positionModel}}</td>
-                    <td>{{position.leverageModel}}</td>
+                    <td>{{position.leverageModel}}x</td>
                     <td>{{position.profit}}</td>
                     <td>{{position.status}}</td>
                     <td>{{position.stopLoss}}</td>

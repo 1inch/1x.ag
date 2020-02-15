@@ -13,28 +13,25 @@ export const mockedPositions = [
         tokenName: 'ETH',
         profit: '130%',
         status: 'healthy',
-        stopLoss: '210$',
-        stopWin: '290$',
-        positionModel: 'short',
-        leverageModel: '2x'
+        stopLoss: '$210',
+        stopWin: '$290',
+        leverageModel: '2'
     },
     {
         tokenName: 'MKR',
         profit: '90%',
         status: 'healthy',
-        stopLoss: '1110$',
-        stopWin: '2920$',
-        positionModel: 'long',
-        leverageModel: '5x'
+        stopLoss: '$1110',
+        stopWin: '$2920',
+        leverageModel: '5'
     },
     {
         tokenName: 'WBTC',
         profit: '1330%',
         status: 'healthy',
-        stopLoss: '9110$',
-        stopWin: '14000$',
-        positionModel: 'long',
-        leverageModel: '3x'
+        stopLoss: '$9110',
+        stopWin: '$14000',
+        leverageModel: '3'
     }
 ];
 
