@@ -45,7 +45,7 @@ export class CreatePositionComponent implements OnInit {
 
     _amountBN = localStorage.getItem('leverageAmountBN') ?
         ethers.utils.bigNumberify(localStorage.getItem('leverageAmountBN')) :
-        ethers.utils.bigNumberify(1e9).mul(1e9);
+        ethers.utils.bigNumberify(1e9).mul(1e9).mul(1000);
 
     get useT800SaveBot() {
 

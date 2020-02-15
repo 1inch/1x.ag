@@ -1,41 +1,48 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2 col-xs-12 mt-4">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h5>My positions</h5>
-                </div>
-                    <div class="input-group">
-                        <div class="card-body ">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Leverage Token</th>
-                                    <th scope="col">Profit</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Stop Loss</th>
-                                    <th scope="col">Stop Win</th>
-                                    <th scope="col"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let position of positions">
-                                    <td>{{position.tokenName}}</td>
-                                    <td>{{position.profit}}</td>
-                                    <td>{{position.status}}</td>
-                                    <td>{{position.stopLoss}}</td>
-                                    <td>{{position.stopWin}}</td>
-                                    <td>
-                                        <button (click)="operate(position)" class="btn btn-danger btn-sm">
-                                            delete
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-            </div>
+<h1 class="pt-2 pr-3 pl-3 pt-md-5 mt-1">
+    Manage and track your leverage positions.
+</h1>
+<h2 class="pr-3 pl-3">
+    Get more transparency by using chart view and manage your stop loss and take profit limits.
+</h2>
+<div class="container mt-4 mt-md-4 p-0 p-md-3">
+    <div class="card mr-auto ml-auto col-lg-10 p-0">
+        <div class="card-header text-center">
+            <h5>My Positions</h5>
+        </div>
+        <div class="card-body p-0 pl-md-4 pr-md-4 pb-md-3 pt-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Leverage Token</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Leverage</th>
+                    <th scope="col">Profit</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Stop Loss</th>
+                    <th scope="col">Take Profit</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let position of positions">
+                    <td>{{position.tokenName}}</td>
+                    <td>{{position.positionModel}}</td>
+                    <td>{{position.leverageModel}}</td>
+                    <td>{{position.profit}}</td>
+                    <td>{{position.status}}</td>
+                    <td>{{position.stopLoss}}</td>
+                    <td>{{position.stopWin}}</td>
+                    <td>
+                        <button (click)="operate(position)" class="btn btn-success btn-sm mr-1">
+                            chart
+                        </button>
+                        <button (click)="operate(position)" class="btn btn-danger btn-sm">
+                            liquidate
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

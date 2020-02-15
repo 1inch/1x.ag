@@ -1,0 +1,29 @@
+h1, h2 {
+    font-weight: 300;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+    }
+
+    h2 {
+        font-size: 0.8rem;
+    }
+
+    span.relays-hint {
+
+        font-size: 60%;
+    }
+}
