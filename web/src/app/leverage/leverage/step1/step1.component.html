@@ -8,7 +8,7 @@
                 <div class="card-body p-4">
                     <div class="input-group">
                         <div class="card-body p-4">
-                            <form [formGroup]="formGroup" novalidate>
+<!--                            <form [formGroup]="formGroup" novalidate>-->
                                 <div class="form-row justify-content-between field-labels d-none d-md-flex">
                                     <div class="form-group col-md-3 mb-1">
                                         Leverage Token:
@@ -53,8 +53,8 @@
                                                tabindex="0" role="button">Long</label>
                                     </div>
                                 </div>
-                                <h5 class="text-center pt-4">Pick your leverage</h5>
-                                <div class="pt-4 text-center">
+                                <h5 class="text-center pt-3">Pick your leverage</h5>
+                                <div class="pt-3 text-center">
                                     <div class="btn-group" btnRadioGroup [(ngModel)]="leverageModel">
                                         <label class="btn btn-info round" btnRadio="1x"
                                                tabindex="0" role="button">1X</label>
@@ -68,33 +68,43 @@
                                                tabindex="0" role="button">5X</label>
                                     </div>
                                 </div>
-                                <div class="row pt-4 ml-md-4 mr-md-4">
-                                    <div class="col-4 col-xs-12 mt-2">Stop loss
-                                        <fa-icon class="upper"
-                                                 [icon]="info"
-                                                 tooltip="Lowest price which will trigger repayment process"></fa-icon>
-                                    </div>
-                                    <div class="col-8 col-xs-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Amount"
-                                                   aria-label="Amount">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                <div class="form-check text-center pt-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="botActivate"
+                                           [(ngModel)]="theCheckbox"  data-md-icheck (change)="toggleVisibility($event)" (click)="toggleVisibility($event)">
+                                    <label class="form-check-label" for="botActivate">
+                                        Use T-800 liquidation save bot
+                                    </label>
+                                </div>
+                                <div *ngIf="theCheckbox">
+                                    <div class="row pt-4 ml-md-4 mr-md-4">
+                                        <div class="col-4 col-xs-12 mt-2">Stop loss
+                                            <fa-icon class="upper"
+                                                     [icon]="info"
+                                                     tooltip="Lowest price which will trigger repayment process"></fa-icon>
+                                        </div>
+                                        <div class="col-8 col-xs-12">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Amount"
+                                                       aria-label="Amount">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row pt-4 ml-md-4 mr-md-4">
-                                    <div class="col-4 col-xs-12 mt-2">Stop win
-                                        <fa-icon class="upper"
-                                                 [icon]="info"
-                                                 tooltip="Highest price which will trigger repayment process"></fa-icon></div>
-                                    <div class="col-8 col-xs-12">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Amount"
-                                                   aria-label="Amount">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                    <div class="row pt-4 ml-md-4 mr-md-4">
+                                        <div class="col-4 col-xs-12 mt-2">Stop win
+                                            <fa-icon class="upper"
+                                                     [icon]="info"
+                                                     tooltip="Highest price which will trigger repayment process"></fa-icon>
+                                        </div>
+                                        <div class="col-8 col-xs-12">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Amount"
+                                                       aria-label="Amount">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-secondary" type="button">MAX</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +112,7 @@
                                 <div class="col-12 text-center pt-4">
                                     <button class="btn btn-lg btn-success">Continue</button>
                                 </div>
-                            </form>
+<!--                            </form>-->
                         </div>
                     </div>
                 </div>

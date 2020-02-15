@@ -14,7 +14,8 @@ import {faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 export class Step1Component implements OnInit {
 
     formGroup = new FormGroup({});
-
+    marked = false;
+    theCheckbox = false;
     tokenSpender = '0x0000000000000000000000000000000000000000';
 
     marginToken = localStorage.getItem('leverageMarginToken') ?
@@ -66,5 +67,9 @@ export class Step1Component implements OnInit {
 
         this.payToken = token.symbol;
         localStorage.setItem('leveragePayToken', this.payToken);
+    }
+
+    toggleVisibility(e){
+        this.marked= e.target.checked;
     }
 }
