@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 interface Position {
     tokenName: string;
@@ -45,14 +46,27 @@ export const mockedPositions = [
 })
 export class MyPositionsComponent implements OnInit {
     positions = mockedPositions;
-
-    constructor() {
+    modalRef: BsModalRef;
+    message: string;
+    constructor(private modalService: BsModalService) {
     }
 
     ngOnInit() {
     }
 
-    operate(position: any) {
-        console.log(position);
+    operate(position: any, template: TemplateRef<any>) {
+        this.modalRef = this.modalService.show(template , {class: 'modal-sm'});
+    }
+
+
+
+    confirm(): void {
+        this.message = 'Confirmed!';
+        this.modalRef.hide();
+    }
+
+    decline(): void {
+        this.message = 'Declined!';
+        this.modalRef.hide();
     }
 }
