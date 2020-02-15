@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LeverageComponent } from './leverage/leverage.component';
 import { CreatePositionComponent } from './leverage/create-position/create-position.component';
 import {MyPositionsComponent} from './leverage/my-positions/my-positions.component';
-
 const routes: Routes = [
     {
         path: '',
@@ -13,6 +12,7 @@ const routes: Routes = [
                 path: '',
                 component: CreatePositionComponent
             },
+
             {
                 path: 'positions',
                 component: MyPositionsComponent
