@@ -4,6 +4,7 @@ import { ConfigurationService } from '../../../configuration.service';
 import { Web3Service } from '../../../web3.service';
 import { ethers } from 'ethers';
 import { TokenService } from '../../../token.service';
+import {faInfoCircle} from "@fortawesome/free-solid-svg-icons";
 
 @Component({
     selector: 'app-step1',
@@ -13,7 +14,8 @@ import { TokenService } from '../../../token.service';
 export class Step1Component implements OnInit {
 
     formGroup = new FormGroup({});
-
+    marked = false;
+    theCheckbox = false;
     tokenSpender = '0x0000000000000000000000000000000000000000';
 
     marginToken = localStorage.getItem('leverageMarginToken') ?
@@ -24,7 +26,9 @@ export class Step1Component implements OnInit {
         localStorage.getItem('leveragePayToken') :
         'DAI';
 
-    radioModel = '';
+    positionModel = '';
+    leverageModel = '';
+    info = faInfoCircle;
     gasPrice;
     tokenBlackList = [];
     marginTokenList = [
@@ -63,5 +67,9 @@ export class Step1Component implements OnInit {
 
         this.payToken = token.symbol;
         localStorage.setItem('leveragePayToken', this.payToken);
+    }
+
+    toggleVisibility(e){
+        this.marked= e.target.checked;
     }
 }
