@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {faInfo, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-step2',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Step2Component implements OnInit {
   radioModel = '';
+  info = faInfoCircle;
   constructor() { }
   ngOnInit() {
   }
