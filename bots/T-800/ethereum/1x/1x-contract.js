@@ -41,8 +41,8 @@ class OneXContract {
         });
     }
 
-    async closePositionFor({ user, newDelegator }) {
-        const data = getCallData(this.instance, 'closePositionFor', [user, newDelegator]);
+    closePositionFor = async ({ user, newDelegate }) => {
+        const data = getCallData(this.instance, 'closePositionFor', [user, newDelegate]);
         const signedTransaction = await this.web3Ethereum.signTransaction(
             this.privateKey, this.instance._address, 0, data
         );

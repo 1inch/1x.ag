@@ -1,0 +1,22 @@
+{
+  "name": "t-800",
+  "version": "1.0.0",
+  "description": "The liquidation bot allows you to close long / short positions outside of the liquidation prices",
+  "main": "index.js",
+  "dependencies": {
+    "bignumber.js": "^9.0.0",
+    "dotenv": "^8.2.0",
+    "ethereumjs-tx": "^2.1.2",
+    "ethereumjs-util": "^6.2.0",
+    "node-cron": "^2.0.3",
+    "rx": "^4.1.0",
+    "web3": "^1.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "start:debug": "node $NODE_DEBUG_OPTION index.js"
+  },
+  "author": "1x.ag Team",
+  "license": "ISC"
+}

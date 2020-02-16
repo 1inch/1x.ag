@@ -50,7 +50,7 @@ class Web3Ethereum {
 
         return new Promise((resolve) => {
             this.web3.eth.sendSignedTransaction(rawTx)
-                .on('transactionHash', (hash) => {
+                .on('receipt', (hash) => {
                     resolve(hash);
                 });
         })
@@ -61,7 +61,12 @@ class Web3Ethereum {
         let nonce = await this.web3.eth.getTransactionCount(from);
         let gasPrice = await this.web3.eth.getGasPrice();
         let gas = data
-            ? await this.web3.eth.estimateGas({ to, data, gas: 5000000, from, value })
+            ? Number(
+                (
+                    (await this.web3.eth.estimateGas({ to, data, gas: 5000000, from, value })) * 1.2
+                )
+                    .toFixed(0)
+            )
             : 21000;
 
         gas = "0x" + gas.toString(16);
