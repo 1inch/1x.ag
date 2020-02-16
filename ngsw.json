@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1581855434808,
+  "timestamp": 1581856124167,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -8,17 +8,17 @@
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
-        "/5-es2015.c30238ae53f3379978a3.js",
-        "/5-es5.c30238ae53f3379978a3.js",
+        "/5-es2015.a24a748589e8ebb70f48.js",
+        "/5-es5.a24a748589e8ebb70f48.js",
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.711ba00593c8e5f1e977.js",
-        "/main-es5.711ba00593c8e5f1e977.js",
+        "/main-es2015.404ba2a4b685d1b0d191.js",
+        "/main-es5.404ba2a4b685d1b0d191.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.8c41daa32bc9f46a9b31.js",
         "/polyfills-es5.d8f2433fe2f825547215.js",
-        "/runtime-es2015.18647b8a21cf106def7e.js",
-        "/runtime-es5.18647b8a21cf106def7e.js",
+        "/runtime-es2015.2a9fe9b3be25f69cbb61.js",
+        "/runtime-es5.2a9fe9b3be25f69cbb61.js",
         "/styles.9c7aac2a3ece00f8b10b.css"
       ],
       "patterns": []
@@ -3704,8 +3704,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/5-es2015.c30238ae53f3379978a3.js": "dfdb26f04a55b4dafd3481ef256230f0ac7587bc",
-    "/5-es5.c30238ae53f3379978a3.js": "d3bd7d554e3bd7de4ea8b83f6e71bf05e446fbec",
+    "/5-es2015.a24a748589e8ebb70f48.js": "babbc5184c674680eb8ce72b6fdad6a98977fb82",
+    "/5-es5.a24a748589e8ebb70f48.js": "37ae5973bc4b5dd68dcec3e5a2692e56c7fa1481",
     "/assets/aave.png": "e1cc8cfb0bce8f6e94171b362800a50df3c487e1",
     "/assets/compound-v2.svg": "377a02fce00a88d4bc61c12a0e2aeb51c9949b62",
     "/assets/cryptomaniacs.png": "550cf4c6ce74f53a3d5f975f3a0b033bda6de8f8",
@@ -7377,14 +7377,14 @@
     "/assets/tokens/token.png": "162fed27a5e3d2a26e33a5a99cc1d4735ee65aed",
     "/assets/trust-wallet.png": "7fcf5ba66868259c8ddb9526ff15999f62ec25c2",
     "/favicon.ico": "6569ddcfa1a6e423724e352aa830eadb6f42dd9e",
-    "/index.html": "4de15b2851729832242ce59b54c6a8c1d83c36f2",
-    "/main-es2015.711ba00593c8e5f1e977.js": "071fc28ec5ebd6a4d9ffa321e43215b3caa4ead2",
-    "/main-es5.711ba00593c8e5f1e977.js": "6cdc8150bbd3bfcca7ce3f6b57a23a7b8e5a7b6f",
+    "/index.html": "43c3b2b241d68b2379df394ad2ed418a5b152c74",
+    "/main-es2015.404ba2a4b685d1b0d191.js": "c1c2a4bf4a5747e18de27e89b9fb77fd4d9979b2",
+    "/main-es5.404ba2a4b685d1b0d191.js": "3dfbe78ef6e2ecda262deb1b8fd32ad35db9b466",
     "/manifest.webmanifest": "c92d7dc3616fe94626656601a4c1cf0a5e9fc359",
     "/polyfills-es2015.8c41daa32bc9f46a9b31.js": "e90439469bd89c9eac5d0ae82fa3d245e1a6e785",
     "/polyfills-es5.d8f2433fe2f825547215.js": "572eb09bf2438339fd94f8b79e647638d184d933",
-    "/runtime-es2015.18647b8a21cf106def7e.js": "7222e20c51714fb0141d7ffcd73717a88942f8ca",
-    "/runtime-es5.18647b8a21cf106def7e.js": "6cc67329eac0a260c21ff7d256665444d1a86360",
+    "/runtime-es2015.2a9fe9b3be25f69cbb61.js": "cadf5a15896a33c791803b4b26201a7d4510d355",
+    "/runtime-es5.2a9fe9b3be25f69cbb61.js": "9dfeaefbe4981ed91f6fb2334c09606e79626b97",
     "/styles.9c7aac2a3ece00f8b10b.css": "80591a9da046c7672eeaf8ee895bcd1e44130139"
   },
   "navigationUrls": [
