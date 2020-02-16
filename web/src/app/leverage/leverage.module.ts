@@ -10,10 +10,12 @@ import {OiUiModule} from '../oi-ui/oi-ui.module';
 import {MyPositionsComponent} from './leverage/my-positions/my-positions.component';
 import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from 'ng2-charts';
+import { LeverageChartDialogComponent } from './leverage/leverage-chart-dialog/leverage-chart-dialog.component';
 
 
 @NgModule({
-    declarations: [LeverageComponent, CreatePositionComponent, MyPositionsComponent],
+    declarations: [LeverageComponent, CreatePositionComponent, MyPositionsComponent, LeverageChartDialogComponent],
     imports: [
         CommonModule,
         LeverageRoutingModule,
@@ -24,7 +26,11 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
         OiUiModule,
         ReactiveFormsModule,
         LoadingSpinnerModule,
-        NgbAlertModule
+        NgbAlertModule,
+        ChartsModule
+    ],
+    entryComponents: [
+        LeverageChartDialogComponent
     ]
 })
 export class LeverageModule {

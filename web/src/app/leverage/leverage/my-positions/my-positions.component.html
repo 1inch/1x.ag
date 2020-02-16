@@ -32,10 +32,10 @@
                         <td>{{position.stopLoss}}</td>
                         <td>{{position.stopWin}}</td>
                         <td>
-                            <button (click)="operate(position,template)" class="btn btn-success btn-sm mr-1">
+                            <button (click)="showChartDialog(position)" class="btn btn-success btn-sm mr-1">
                                 chart
                             </button>
-                            <button (click)="operate(position,template)" class="btn btn-danger btn-sm">
+                            <button (click)="operate(position, template)" class="btn btn-danger btn-sm">
                                 liquidate
                             </button>
                         </td>
@@ -51,6 +51,7 @@
                     <button type="button" class="btn btn-primary" (click)="decline()">No</button>
                 </div>
             </ng-template>
+
         </div>
     </div>
 </div>
