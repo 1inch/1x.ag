@@ -1,0 +1,139 @@
+<h1 class="pt-2 pr-3 pl-3 pt-md-5 mt-1">
+    Leverage aggregator with automated trading strategy,<br>lowest price slippage and gas costs.
+</h1>
+<h2 class="pr-3 pl-3">
+    Achieving best results by using flash loans and liquidation save bot.
+</h2>
+<div class="container mt-4 mt-md-4 p-0 p-md-3">
+    <div class="card mr-auto ml-auto col-lg-8 p-0">
+        <div class="card-header text-center">
+            <h5>Create position</h5>
+        </div>
+        <div class="card-body p-2 pl-md-4 pr-md-4 pb-md-3 pt-3">
+
+            <app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+            <div *ngIf="!loading">
+                <div *ngIf="done || error" class="mb-3">
+
+                    <ngb-alert (close)="done = false" *ngIf="done" class="mb-1" type="success">
+                        Swap transaction was successfully sent.<br> <a
+                        [href]="'https://etherscan.io/tx/' + transactionHash"
+                        target="_blank">{{transactionHash}}</a>
+                    </ngb-alert>
+
+                    <ngb-alert (close)="error = false" *ngIf="error" class="mb-1" type="danger">
+                        An error is occured. Please try again or contact us.
+                        If you are using Metamask, you can try to switch from mainnet to testnet and back to solve
+                        this
+                        problem.
+                    </ngb-alert>
+                </div>
+                <!--                            <form [formGroup]="formGroup" novalidate>-->
+                <div class="form-row justify-content-between field-labels d-none d-md-flex">
+                    <div class="form-group col-md-3 mb-1">
+                        Leverage Token:
+                    </div>
+                    <div class="form-group col-md-3 mb-1">
+                        Pay Token:
+                    </div>
+                </div>
+                <div class="form-row border-bottom mb-3">
+                    <div class="form-group col-12 col-md-3">
+                        <label class="d-md-none">
+                            Leverage Token:
+                        </label>
+                        <oi-token-selector
+                            id="marginToken"
+                            [token]="marginToken"
+                            [tokenBlackList]="tokenBlackList"
+                            [tokenSpender]="tokenSpender"
+                            (onTokenSelect)="onMarginTokenSelect($event)"
+                        ></oi-token-selector>
+                    </div>
+                    <div class="form-group col-12 col-md-6 pt-3 pt-md-0">
+                        <oi-token-amount-field
+                            id="amount"
+                            name="amount"
+                            [token]="payToken"
+                            [(tokenAmountBN)]="amountBN"
+                            [gasPrice]="gasPrice"
+                        ></oi-token-amount-field>
+                    </div>
+                    <div class="form-group col-12 col-md-3">
+                        <label class="d-md-none">
+                            Pay Token:
+                        </label>
+                        <oi-token-selector
+                            id="fromToken"
+                            [token]="payToken"
+                            [tokenBlackList]="tokenBlackList"
+                            [tokenSpender]="tokenSpender"
+                            (onTokenSelect)="onPayTokenSelect($event)"
+                        ></oi-token-selector>
+                    </div>
+                </div>
+                <h5 class="text-center pt-3">Pick Lending Provider</h5>
+                <div class="form-row">
+                    <div class="form-group col-12 col-md-6 ml-auto mr-auto">
+                        <oi-option-selector
+                            id="liquidityProvider"
+                            [option]="liquidityProvider"
+                            [options]="liquidityProviders"
+                            (onOptionSelect)="onLiquidityProviderSelect($event)"
+                        ></oi-option-selector>
+                    </div>
+                </div>
+                <h5 class="text-center pt-2">Pick your leverage</h5>
+                <div class="pt-3 text-center">
+                    <div class="btn-group" btnRadioGroup [(ngModel)]="leverageModel">
+                        <label class="btn btn-info round" btnRadio="2"
+                               tabindex="0" role="button">2X</label>
+                        <label class="btn btn-info round" btnRadio="3"
+                               tabindex="0" role="button">3X</label>
+                        <label class="btn btn-info round" btnRadio="4"
+                               tabindex="0" role="button">4X</label>
+                        <label class="btn btn-info round" btnRadio="5"
+                               tabindex="0" role="button">5X</label>
+                    </div>
+                </div>
+                <div class="form-check text-center pt-3">
+                    <input class="form-check-input" type="checkbox" value="" id="botActivate"
+                           [(ngModel)]="useT800SaveBot" data-md-icheck (change)="toggleVisibility($event)"
+                           (click)="toggleVisibility($event)">
+                    <label class="form-check-label" for="botActivate">
+                        Use T-800 liquidation save bot
+                    </label>
+                </div>
+                <div *ngIf="useT800SaveBot">
+                    <div class="row pt-4 ml-md-4 mr-md-4">
+                        <div class="col-4 col-xs-12 mt-2">Stop loss at
+                            <fa-icon class="upper"
+                                     [icon]="info"
+                                     tooltip="Lowest price which will trigger closing position"></fa-icon>
+                        </div>
+                        <div class="col-8 col-xs-12">
+                            <input type="text" class="form-control" [(ngModel)]="stopLossLimit" placeholder="in %"
+                                   aria-label="Amount">
+                        </div>
+                    </div>
+                    <div class="row pt-4 ml-md-4 mr-md-4">
+                        <div class="col-4 col-xs-12 mt-2">Take profit at
+                            <fa-icon class="upper"
+                                     [icon]="info"
+                                     tooltip="Highest price which will trigger closing position"></fa-icon>
+                        </div>
+                        <div class="col-8 col-xs-12">
+                            <input type="text" class="form-control" [(ngModel)]="takeProfitLimit" placeholder="in %"
+                                   aria-label="Amount">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-center pt-4">
+                    <button class="btn btn-lg btn-success" (click)="create()">Create</button>
+                </div>
+                <!--                            </form>-->
+            </div>
+        </div>
+    </div>
+</div>

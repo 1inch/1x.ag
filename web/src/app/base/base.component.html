@@ -1,0 +1,377 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-flex d-md-none">
+    <button (click)="openConnectModal()"
+            class="btn btn-link btn-sm-open-connect my-1 my-sm-0 d-md-none position-absolute pt-0 pb-0 mt-0 mb-0"
+            type="button">
+
+        <div *ngIf="web3Service.walletAddress" class="connected align-middle">
+            <span #walletIconEl2 class="wallet-icon"></span>
+        </div>
+        <div *ngIf="!web3Service.walletAddress">
+            <svg class="connect-icon" height="47px" style="fill: currentColor;enable-background:new 0 0 47 47;"
+                 version="1.1" viewBox="0 0 47 47"
+                 width="47px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                 y="0px">
+    <g>
+    	<g id="Layer_1_110_">
+    		<g>
+    			<path d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+    				c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+    				C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+                <path d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+    				c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+    				C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+                <path d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+    				c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+    				C47,22.85,45.104,20.952,42.762,20.952z"/>
+                <path d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+    				c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+                <path d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+    				c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+    				C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+                <circle cx="23.83" cy="23.323" r="7.271"/>
+    		</g>
+    	</g>
+    </g>
+    </svg>
+        </div>
+    </button>
+
+    <div class="ml-auto mr-auto">
+        <a class="navbar-brand" routerLink="/">
+            <img alt="1inch.exchange" height="70" src="assets/logo.svg">
+        </a>
+    </div>
+
+    <div class="switch switch-md theme-switcher my-1 my-sm-0 position-absolute" style="right: 20px;">
+        <input (ngModelChange)="themeService.toggleMode()" [ngModel]="themeService.isDarkMode" class="switch"
+               type="checkbox">
+        <label for="dark-mode">
+            <span *ngIf="themeService.isDarkMode" class="d-none d-md-block">Dark</span>
+            <span *ngIf="!themeService.isDarkMode" class="d-none d-md-block">Light</span>
+        </label>
+    </div>
+</nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-none d-md-flex">
+
+    <a class="navbar-brand pl-4" routerLink="/" title="1inch.exchange - DEX Aggregator">
+        <img alt="1inch.exchange" height="64" src="assets/logo.svg">
+        <span class="d-none d-md-inline-block">
+            <strong class="ml-2"
+                    style="position: relative; top: 5px;font-size: 2.3rem; font-family: 'Baloo Bhai', cursive;"
+            >1x</strong><sup>.ag</sup>
+        </span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            (click)="toggleCollapsed()"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbarNavDropdown" [ngClass]="{'collapse': collapsed, 'navbar-collapse': true}">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link pl-3 pr-3" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{exact: true}"
+                   routerLink="/">MARGIN</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link pl-3 pr-3" routerLinkActive="active"
+                   [routerLinkActiveOptions]="{exact: true}"
+                   routerLink="/positions">MY POSITIONS</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link pl-3 pr-3" routerLinkActive="active" routerLink="/how-it-works">HOW IT WORKS</a>
+            </li>
+        </ul>
+        <div class="d-flex justify-content-end">
+            <button (click)="openConnectModal()"
+                    class="btn btn-dark btn-open-connect my-2 my-sm-0 d-none d-md-inline-block mr-4" type="button">
+
+                <div *ngIf="web3Service.walletAddress" class="connected align-middle">
+                    <span #walletIconEl class="wallet-icon"></span>
+                    {{web3Service.walletEns ? web3Service.walletEns : web3Service.walletAddress}}
+                </div>
+                <div *ngIf="!web3Service.walletAddress">
+                    <svg class="connect-icon" height="47px" style="fill: currentColor;enable-background:new 0 0 47 47;"
+                         version="1.1" viewBox="0 0 47 47"
+                         width="47px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"
+                         y="0px">
+            <g>
+                <g id="Layer_1_110_">
+                    <g>
+                        <path d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+                            c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+                            C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+                        <path d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+                            c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+                            C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+                        <path d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+                            c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+                            C47,22.85,45.104,20.952,42.762,20.952z"/>
+                        <path d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+                            c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+                        <path d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+                            c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+                            C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+                        <circle cx="23.83" cy="23.323" r="7.271"/>
+                    </g>
+                </g>
+            </g>
+            </svg>
+                    Connect wallet
+                </div>
+            </button>
+            <div class="switch switch-md theme-switcher pt-1 my-1 my-sm-0 mr-4">
+                <input (ngModelChange)="themeService.toggleMode()" [ngModel]="themeService.isDarkMode" class="switch"
+                       id="dark-mode"
+                       type="checkbox">
+                <label for="dark-mode">
+                    <span *ngIf="themeService.isDarkMode" class="d-none d-md-block">Dark</span>
+                    <span *ngIf="!themeService.isDarkMode" class="d-none d-md-block">Light</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+<router-outlet *ngIf="!loading"></router-outlet>
+
+<div class="text-center mt-2 footer-container">
+    <h5>ENS: <a href="https://etherscan.io/address/1inch.eth"
+                target="_blank">{{(ensDomain ? ensDomain : 'is updating...')}}</a></h5>
+    <h6 style="font-weight: 100; font-size: 0.9rem;">BUIDL @ETHDenver 2020 by</h6>
+    <img alt="Crypto Maniacs" src="assets/cryptomaniacs.png" style="opacity: 0.3;" width="200">
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/">Margin</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/positions">My positions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/how-it-works">How it works</a>
+        </li>
+    </ul>
+</div>
+
+<ng-template #connectTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">
+            Wallet connect
+        </h4>
+        <button (click)="modalRef.hide()" aria-label="Close" class="close pull-right" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div *ngIf="!connectInProgress">
+
+                        <div *ngIf="web3Service.txProvider && web3Service.txProviderName"
+                             class="text-center border-bottom pb-3">
+                            <h5 class="spread-title pb-3">Connected wallet:</h5>
+                            <button class="btn btn-default btn-wallet-connect btn-wallet-connected"
+                                    style="cursor: default;">
+                                <div *ngIf="web3Service.txProviderName === 'metamask'">
+                                    <span *ngIf="isMetaMask">
+                                        <img height="64" src="assets/metamask-fox.svg"><br>
+                                        Metamask
+                                    </span>
+                                    <span *ngIf="isTrustWallet">
+                                        <img height="64" src="assets/trust-wallet.png"><br>
+                                        Trust
+                                    </span>
+                                    <span *ngIf="!isMetaMask && !isTrustWallet">
+                                        <img height="64" src="assets/ethereum-white.png"><br>
+                                        Web3
+                                    </span>
+                                </div>
+
+                                <div *ngIf="web3Service.txProviderName === 'fortmatic'">
+                                    <img height="64" src="assets/fortmatic.png"><br>
+                                    Fortmatic
+                                </div>
+                            </button>
+
+                            <br>
+
+                            <button (click)="disconnect()" class="btn btn-link btn-disconnect">
+                                Disconnect
+                            </button>
+
+                            <div *ngIf="web3Service.walletAddress" class="input-group">
+                                <div class="input-group-prepend">
+                                    <button (click)="copyToClipboard(web3Service.walletAddress)" class="btn btn-info"
+                                            type="button">
+                                        <fa-icon [icon]="copyIcon"></fa-icon>
+                                    </button>
+                                </div>
+
+                                <div #walletAddressDropDown="ngbDropdown" class="form-control d-block p-0" ngbDropdown>
+                                    <button class="btn btn-block btn-outline-secondary text-left is-flex"
+                                            id="fromTokenDropdown" ngbDropdownToggle
+                                            type="button">
+                                    <span
+                                        style="overflow:hidden; text-overflow: ellipsis; white-space:nowrap; width: 100%;">
+                                        {{web3Service.walletAddress}}
+                                    </span>
+                                    </button>
+                                    <div aria-labelledby="fromTokenDropdown" ngbDropdownMenu>
+
+                                        <div id="walletAddressesScrollArea">
+                                            <div class="p-2">
+
+                                                <ul class="list-group list-group-flush">
+                                                    <li (click)="setWalletAddress(walletAddress, walletAddressDropDown)"
+                                                        *ngFor="let walletAddress of web3Service.walletAddresses; index as i;"
+                                                        class="list-group-item">
+                                                        #{{i + 1}} {{walletAddress}}<br>
+                                                        {{tokenService.formatAsset('ETH', web3Service.walletBalances[i] ? web3Service.walletBalances[i] : 0)}}
+                                                        ETH
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ngb-alert class="mb-1" type="info" [dismissible]="false">
+                            ⚠️ By connecting to the wallet you accept <a routerLink="/legal" target="_blank">Terms of
+                            Service</a>.
+                        </ngb-alert>
+
+                        <h5 class="spread-title text-center pt-3">Choose your wallet:</h5>
+                        <div
+                            class="d-flex flex-wrap flex-row justify-content-center bd-highlight text-center distributed-dex-list pt-2 pb-2 mb-1">
+
+                            <div *ngIf="web3Service.txProviderName !== 'metamask'" class="p-2 bd-highlight">
+
+                                <button (click)="connect('metamask')" class="btn btn-default btn-wallet-connect">
+
+                                    <span *ngIf="isMetaMask">
+                                        <img height="64" src="assets/metamask-fox.svg"><br>
+                                        Metamask
+                                    </span>
+                                    <span *ngIf="isTrustWallet">
+                                        <img height="64" src="assets/trust-wallet.png"><br>
+                                        Trust
+                                    </span>
+                                    <span *ngIf="!isMetaMask && !isTrustWallet">
+                                        <img height="64" src="assets/ethereum.png"><br>
+                                        Web3
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div *ngIf="web3Service.txProviderName !== 'fortmatic'" class="p-2 bd-highlight">
+                                <button (click)="connect('fortmatic')" class="btn btn-default btn-wallet-connect">
+                                    <img height="64" src="assets/fortmatic.png"><br>
+                                    Fortmatic
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div *ngIf="connectInProgress" class="text-center pb-4 pt-3 loading-container">
+
+                        <img src="assets/loading.svg" width="100">
+                        <h6>
+                            <span class="first">Wai</span><span class="second">ti</span><span
+                            class="third">ng</span><span
+                            class="last">...</span><br>
+                        </h6>
+                    </div>
+                </div>
+                <div class="border-left transactions-border col-12 col-md-6">
+                    <div class="transaction-block">
+                        <hr class="d-block d-md-none">
+                        <h5 class="spread-title pb-2 text-center">Transactions:</h5>
+
+                        <div class="table-responsive" style="max-height: 620px;">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                    <th>Block</th>
+                                    <th>Gas</th>
+                                    <th>Hash</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let tx of transactionService.getTransactionsForView()"
+                                    style="font-size: 0.9rem;">
+                                    <td class="align-middle text-center">
+                                    <span *ngIf="tx.receipt">
+                                        <img src="assets/checked.svg" height="24" *ngIf="tx.receipt.status">
+                                        <img src="assets/cancel.svg" height="24" *ngIf="!tx.receipt.status">
+                                     </span>
+                                        <span *ngIf="!tx.receipt">
+                                        <img height="24" src="assets/loading.svg">
+                                    </span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span *ngIf="tx.time">{{tx.time}}</span>
+                                        <span *ngIf="!tx.time">
+                                        <img height="24" src="assets/loading.svg">
+                                    </span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span *ngIf="tx.receipt">{{tx.receipt.blockNumber}}</span>
+                                        <span *ngIf="!tx.receipt">
+                                        <img height="24" src="assets/loading.svg">
+                                    </span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span *ngIf="tx.receipt">{{tx.receipt.gasUsed}}</span>
+                                        <span *ngIf="!tx.receipt">
+                                        <img height="24" src="assets/loading.svg">
+                                    </span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a [href]="'https://etherscan.io/tx/' + tx.hash"
+                                           class="d-block"
+                                           style="width: 100px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                                           target="_blank">{{tx.hash}}</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p *ngIf="!transactionService.hasTransactions()"
+                           class="spread-title pb-3 text-center text-warning">
+                            No transactions in history...
+                        </p>
+
+                        <div *ngIf="transactionService.hasTransactions()" class="text-center mt-4">
+                            <button (click)="transactionService.clear()" class="btn btn-warning">Clear history</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<nav class="navbar fixed-bottom navbar-light bg-light" style="background: #222 !important;" *ngIf="showInstall">
+
+    <div class="mt-2">
+        <h5 style="font-weight: 300; color: #c936ff !important;">
+            Install 1inch.exchange
+        </h5>
+        <p style="font-size: 0.8rem; color: white;">
+            Use 1inch.exchange dApp without a WebBrowser on your device!
+        </p>
+        <div>
+            <button class="btn btn-info" (click)="install()">INSTALL</button>
+            <button class="btn btn-link ml-2" (click)="hideInstallPrompt()">No</button>
+        </div>
+    </div>
+</nav>

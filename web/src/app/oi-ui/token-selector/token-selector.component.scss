@@ -1,0 +1,54 @@
+button {
+    img {
+        width: 24px;
+    }
+}
+
+li {
+    img {
+        width: 16px;
+    }
+}
+
+.token-dropdown:hover,
+.token-dropdown:active,
+.token-dropdown:focus {
+
+    color: rgb(33, 37, 41);
+    background: transparent;
+    box-shadow: none;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-outline-secondary.dropdown-toggle {
+
+    background: transparent;
+}
+
+.dropdown-toggle::after {
+
+    color: rgb(33, 37, 41);
+}
+
+.tokenSearch:focus {
+
+    box-shadow: none;
+}
+
+.tokenScrollArea {
+    max-height: 20rem;
+    overflow: auto;
+    min-width: 15rem;
+}
+
+.is-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-item:hover {
+
+    cursor: pointer;
+}

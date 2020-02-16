@@ -1,15 +1,30 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {LeverageComponent} from './leverage/leverage.component';
-import {Step1Component} from './leverage/step1/step1.component';
-import {Step2Component} from './leverage/step2/step2.component';
+import {CreatePositionComponent} from './leverage/create-position/create-position.component';
 import {LeverageRoutingModule} from './leverage-routing.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ButtonsModule, TooltipModule} from 'ngx-bootstrap';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {OiUiModule} from '../oi-ui/oi-ui.module';
+import {MyPositionsComponent} from './leverage/my-positions/my-positions.component';
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
-    declarations: [LeverageComponent, Step1Component, Step2Component],
+    declarations: [LeverageComponent, CreatePositionComponent, MyPositionsComponent],
     imports: [
         CommonModule,
-        LeverageRoutingModule
+        LeverageRoutingModule,
+        FormsModule,
+        ButtonsModule,
+        FontAwesomeModule,
+        TooltipModule.forRoot(),
+        OiUiModule,
+        ReactiveFormsModule,
+        LoadingSpinnerModule,
+        NgbAlertModule
     ]
 })
 export class LeverageModule {

@@ -1,0 +1,31 @@
+{
+    "name": "1inch-exchange",
+    "version": "1.0.0",
+    "scripts": {
+        "sm:test": "scripts/test.sh",
+        "sm:compile": "etherlime compile --runs 200",
+        "sm:deploy:dev": "etherlime compile && etherlime deploy",
+        "sm:flat": "etherlime flatten OneInchExchange.sol",
+        "verify": "truffle run verify"
+    },
+    "private": true,
+    "devDependencies": {
+        "@openzeppelin/contracts": "^2.4.0-beta.2",
+        "axios": "^0.19.0",
+        "coingecko-api": "^1.0.6",
+        "etherlime": "^2.2.2",
+        "etherlime-lib": "^1.1.4",
+        "ipfs-api": "^26.1.2",
+        "request": "^2.88.0",
+        "solc": "^0.5.13",
+        "solium": "^1.2.5",
+        "truffle": "^5.0.42",
+        "truffle-assertions": "^0.9.2",
+        "truffle-error": "^0.0.5",
+        "truffle-flattener": "^1.4.2",
+        "web3": "^2.0.0-alpha.1"
+    },
+    "dependencies": {
+        "@0x/contracts-exchange-libs": "^4.1.0"
+    }
+}
