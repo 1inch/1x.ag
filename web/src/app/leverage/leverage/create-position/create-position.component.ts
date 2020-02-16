@@ -5,6 +5,7 @@ import { Web3Service } from '../../../web3.service';
 import { ethers } from 'ethers';
 import { TokenService } from '../../../token.service';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { OneLeverageService } from '../../../one-leverage.service';
 
 @Component({
     selector: 'app-step1',
@@ -28,7 +29,7 @@ export class CreatePositionComponent implements OnInit {
     gasPrice;
     tokenBlackList = [];
 
-    liquidityProviders = [
+    leverageProviders = [
         {
             name: 'Compound',
             icon: 'assets/compound-v2.svg'
@@ -52,7 +53,8 @@ export class CreatePositionComponent implements OnInit {
         'DAI',
         'WBTC',
         'ZRX',
-        'MKR'
+        'MKR',
+        'tBTC'
     ];
 
     loading = true;
@@ -60,15 +62,16 @@ export class CreatePositionComponent implements OnInit {
     error = false;
     done = false;
 
-    liquidityProvider = localStorage.getItem('leverageLiquidityProvider') ?
-        this.liquidityProviders.filter(provider => provider.name ===
-            localStorage.getItem('leverageLiquidityProvider'))[0] :
-        this.liquidityProviders.filter(provider => provider.name === 'Compound')[0];
+    leverageProvider = localStorage.getItem('leverageProvider') ?
+        this.leverageProviders.filter(provider => provider.name ===
+            localStorage.getItem('leverageProvider'))[0] :
+        this.leverageProviders.filter(provider => provider.name === 'Compound')[0];
 
     constructor(
         public configurationService: ConfigurationService,
         public tokenService: TokenService,
-        public web3Service: Web3Service
+        public web3Service: Web3Service,
+        public oneLeverageService: OneLeverageService
     ) {
     }
 
@@ -170,21 +173,58 @@ export class CreatePositionComponent implements OnInit {
         this.marked = e.target.checked;
     }
 
-    create() {
+    async create() {
 
         this.loading = true;
 
-        setTimeout(() => {
+        try {
 
-            this.loading = false;
+            const leverageTokenSymbol = this.oneLeverageService.getLeveregaTokenSymbol(
+                this.marginToken,
+                this.payToken,
+                Number(this.leverageModel)
+            );
+
+            const leverageTokenAddress = (await this.oneLeverageService.getTokenContract(
+                leverageTokenSymbol
+            )).address;
+
+            if (
+                !(await this.tokenService.isApproved(
+                    this.payToken,
+                    leverageTokenAddress,
+                    this._amountBN
+                ))
+            ) {
+
+                await this.tokenService.approve(
+                    this.payToken,
+                    leverageTokenAddress,
+                    this._amountBN
+                );
+            }
+
+            const transactionHash = await this.oneLeverageService.openPosition(
+                this.marginToken,
+                this.payToken,
+                Number(this.leverageModel),
+                this.leverageProvider.name,
+                this._amountBN
+            );
+
+            this.transactionHash = transactionHash;
             this.done = true;
-            this.transactionHash = '0x5565dc0631e50b776ebef819cb334093b6f1f102772d084f95e580523825cdcd';
-        }, 10000);
+        } catch (e) {
+
+            console.error(e);
+        }
+
+        this.loading = false;
     }
 
-    onLiquidityProviderSelect($event: any) {
+    onLeverageProviderSelect($event: any) {
 
-        this.liquidityProvider = $event;
-        localStorage.setItem('leverageLiquidityProvider', $event.name);
+        this.leverageProvider = $event;
+        localStorage.setItem('leverageProvider', $event.name);
     }
 }
