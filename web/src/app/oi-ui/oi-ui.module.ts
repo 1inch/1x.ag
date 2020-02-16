@@ -4,15 +4,19 @@ import { TokenSelectorComponent } from './token-selector/token-selector.componen
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenAmountFieldComponent } from './token-amount-field/token-amount-field.component';
+import { OptionSelectorComponent } from './option-selector/option-selector.component';
 
 @NgModule({
     declarations: [
         TokenSelectorComponent,
-        TokenAmountFieldComponent
+        TokenAmountFieldComponent,
+        OptionSelectorComponent
     ],
     exports: [
         TokenSelectorComponent,
-        TokenAmountFieldComponent
+        TokenAmountFieldComponent,
+        OptionSelectorComponent,
+        OptionSelectorComponent
     ],
     imports: [
         CommonModule,
