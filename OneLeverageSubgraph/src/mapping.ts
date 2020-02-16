@@ -1,10 +1,6 @@
-import { BigInt, Bytes, ByteArray, crypto } from "@graphprotocol/graph-ts"
-import {
-    Contract,
-    OpenPosition as OpenPositionEvent,
-    ClosePosition as ClosePositionEvent
-} from "../generated/Contract/Contract"
-import { OpenPosition, ClosePosition } from "../generated/schema"
+import { BigInt, ByteArray, Bytes, crypto } from '@graphprotocol/graph-ts';
+import { ClosePosition as ClosePositionEvent, OpenPosition as OpenPositionEvent } from '../generated/Contract/Contract';
+import { ClosePosition, OpenPosition } from '../generated/schema';
 
 function padHex(hex: string, length: i32): string {
     if (hex.startsWith('0x')) {
@@ -18,7 +14,7 @@ function hashOfOpenPosition(
     amount: BigInt,
     liquidationAmountMin: BigInt,
     liquidationAmountMax: BigInt,
-    blockNumber: BigInt,
+    blockNumber: BigInt
 ): ByteArray {
     return crypto.keccak256(
         ByteArray.fromHexString(
@@ -33,7 +29,7 @@ function hashOfOpenPosition(
 
 function hashOfClosePosition(
     owner: Bytes,
-    blockNumber: BigInt,
+    blockNumber: BigInt
 ): ByteArray {
     return crypto.keccak256(
         ByteArray.fromHexString(
@@ -72,7 +68,7 @@ export function handleOpenPosition(event: OpenPositionEvent): void {
     }
 
     // Entities can be written to the store with `.save()`
-    entity.save()
+    entity.save();
 }
 
 export function handleClosePosition(event: ClosePositionEvent): void {
@@ -98,5 +94,5 @@ export function handleClosePosition(event: ClosePositionEvent): void {
     }
 
     // Entities can be written to the store with `.save()`
-    entity.save()
+    entity.save();
 }
