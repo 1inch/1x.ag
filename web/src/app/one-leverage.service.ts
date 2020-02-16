@@ -5,6 +5,7 @@ import OneLeverageABI from './abi/OneLeverageABI.json';
 import HolderOneABI from './abi/HolderOneABI.json';
 import { ConfigurationService } from './configuration.service';
 import { BigNumber } from 'ethers/utils/bignumber';
+import { ethers } from 'ethers';
 
 @Injectable({
     providedIn: 'root'
@@ -68,14 +69,22 @@ export class OneLeverageService {
         debtTokenSymbol: string,
         leverageRatio: number,
         leverageProvider: string,
-        amount: BigNumber
+        amount: BigNumber,
+        stopLoss: number,
+        takeProfit: number
     ): Promise<string> {
 
         const leverageSymbol = leverageRatio + 'x' + collateralTokenSymbol + debtTokenSymbol;
         const leverageContract = await this.getTokenContract(leverageSymbol);
         const callData = leverageContract.methods.openPosition(
             amount,
-            (await this.getHolderContract(leverageProvider)).address
+            (await this.getHolderContract(leverageProvider)).address,
+            ethers.utils.bigNumberify(1).sub(
+                ethers.utils.bigNumberify(stopLoss).div(100)
+            ).mul(1e9).mul(1e9),
+            ethers.utils.bigNumberify(1).add(
+                ethers.utils.bigNumberify(takeProfit).div(100)
+            ).mul(1e9).mul(1e9)
         )
             .encodeABI();
 

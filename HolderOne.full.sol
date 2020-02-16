@@ -244,11 +244,16 @@ pragma solidity ^0.5.0;
 
 
 contract IHolder {
+    function stopLoss() public view returns(uint256);
+    function takeProfit() public view returns(uint256);
+
     function openPosition(
         IERC20 collateral,
         IERC20 debt,
         uint256 amount,
-        uint256 leverageRatio
+        uint256 leverageRatio,
+        uint256 _stopLoss,
+        uint256 _takeProfit
     )
         external
         payable
@@ -261,21 +266,9 @@ contract IHolder {
     )
         external;
 
-    function collateralAmount(IERC20 token) public view returns(uint256);
-    function borrowAmount(IERC20 token) public view returns(uint256);
-
-    // Internal API
-
-    function _flashLoan(IERC20 asset, uint256 amount, bytes memory data) internal;
-    function _repayFlashLoan(IERC20 token, uint256 amount) internal;
-
-    function _exchange(IERC20 fromToken, IERC20 toToken, uint256 amount) internal returns(uint256);
-
-    function _deposit(IERC20 token, uint256 amount) internal;
-    function _redeem(IERC20 token, uint256 amount) internal;
-    function _redeemAll(IERC20 token) internal;
-    function _borrow(IERC20 token, uint256 amount) internal;
-    function _repay(IERC20 token, uint256 amount) internal;
+    function collateralAmount(IERC20 token) public returns(uint256);
+    function borrowAmount(IERC20 token) public returns(uint256);
+    function pnl(IERC20 collateral, IERC20 debt, uint256 leverageRatio) public returns(uint256);
 }
 
 // File: @openzeppelin/contracts/utils/Address.sol
@@ -529,8 +522,10 @@ contract HolderBase is IHolder {
     using SafeMath for uint256;
     using UniversalERC20 for IERC20;
 
-    address public owner = msg.sender;
     address public delegate;
+    address public owner = msg.sender;
+    uint256 private _stopLoss;
+    uint256 private _takeProfit;
 
     modifier onlyOwner {
         require(msg.sender == owner, "Access denied");
@@ -542,17 +537,47 @@ contract HolderBase is IHolder {
         _;
     }
 
+    function stopLoss() public view returns(uint256) {
+        return _stopLoss;
+    }
+
+    function takeProfit() public view returns(uint256) {
+        return _takeProfit;
+    }
+
+    function() external payable {
+        require(msg.sender != tx.origin);
+    }
+
+    function pnl(IERC20 collateral, IERC20 debt, uint256 leverageRatio) public returns(uint256) {
+        uint256 value = _pnl(collateral, debt);
+        if (value > 1e18) {
+            return uint256(1e18).add(
+                value.sub(1e18).mul(leverageRatio)
+            );
+        } else {
+            return uint256(1e18).sub(
+                uint256(1e18).sub(value).mul(leverageRatio)
+            );
+        }
+    }
+
     function openPosition(
         IERC20 collateral,
         IERC20 debt,
         uint256 amount,
-        uint256 leverageRatio
+        uint256 leverageRatio,
+        uint256 stopLossValue,
+        uint256 takeProfitValue
     )
         external
         payable
         onlyOwner
         returns(uint256)
     {
+        _stopLoss = stopLossValue;
+        _takeProfit = takeProfitValue;
+
         debt.universalTransferFrom(msg.sender, address(this), amount);
 
         _flashLoan(
@@ -567,6 +592,8 @@ contract HolderBase is IHolder {
                 // repayAmount added dynamically in executeOperation
             )
         );
+
+        return collateralAmount(collateral);
     }
 
     function openPositionCallback(
@@ -625,6 +652,20 @@ contract HolderBase is IHolder {
         _repayFlashLoan(debt, repayAmount);
         debt.universalTransfer(user, returnedAmount.sub(repayAmount));
     }
+
+    // Internals for overriding
+
+    function _flashLoan(IERC20 asset, uint256 amount, bytes memory data) internal;
+    function _repayFlashLoan(IERC20 token, uint256 amount) internal;
+
+    function _exchange(IERC20 fromToken, IERC20 toToken, uint256 amount) internal returns(uint256);
+
+    function _pnl(IERC20 collateral, IERC20 debt) internal returns(uint256);
+    function _deposit(IERC20 token, uint256 amount) internal;
+    function _redeem(IERC20 token, uint256 amount) internal;
+    function _redeemAll(IERC20 token) internal;
+    function _borrow(IERC20 token, uint256 amount) internal;
+    function _repay(IERC20 token, uint256 amount) internal;
 }
 
 // File: contracts/interface/aave/IFlashLoanReceiver.sol
@@ -656,17 +697,16 @@ pragma solidity ^0.5.0;
 
 
 
-
-contract FlashLoanAave is IHolder {
+contract FlashLoanAave {
 
     using SafeMath for uint256;
     using UniversalERC20 for IERC20;
 
-    ILendingPool public pool = ILendingPool(0x398eC7346DcD622eDc5ae82352F02bE94C62d119);
-    address public core = 0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3;
+    ILendingPool public constant POOL = ILendingPool(0x398eC7346DcD622eDc5ae82352F02bE94C62d119);
+    address public constant CORE = 0x3dfd23A6c5E8BbcFc9581d2E864a68feb6a076d3;
 
     function _flashLoan(IERC20 token, uint256 amount, bytes memory data) internal {
-        pool.flashLoan(
+        POOL.flashLoan(
             address(this),
             address(token),
             amount,
@@ -675,7 +715,7 @@ contract FlashLoanAave is IHolder {
     }
 
     function _repayFlashLoan(IERC20 token, uint256 amount) internal {
-        token.universalTransfer(core, amount);
+        token.universalTransfer(CORE, amount);
     }
 
     // Callback for Aave flashLoan
@@ -687,9 +727,9 @@ contract FlashLoanAave is IHolder {
     )
         external
     {
-        require(msg.sender == address(pool), "Access denied");
-        (bool success,) = address(this).call(abi.encodePacked(params, amount.add(fee)));
-        require(success, "External call failed");
+        require(msg.sender == address(POOL), "Access denied, only pool alowed");
+        (bool success, bytes memory data) = address(this).call(abi.encodePacked(params, amount.add(fee)));
+        require(success, string(abi.encodePacked("External call failed: ", data)));
     }
 }
 
@@ -762,29 +802,42 @@ pragma solidity ^0.5.0;
 
 
 
-
-contract ExchangeOneSplit is IHolder {
+contract ExchangeOneSplit {
 
     using SafeMath for uint256;
     using UniversalERC20 for IERC20;
 
-    IOneSplit public oneSplit = IOneSplit(0xDFf2AA5689FCBc7F479d8c84aC857563798436DD);
+    IOneSplit public constant ONE_SPLIT = IOneSplit(0xDFf2AA5689FCBc7F479d8c84aC857563798436DD);
 
     function _exchange(IERC20 fromToken, IERC20 toToken, uint256 amount) internal returns(uint256) {
-        fromToken.universalApprove(address(oneSplit), amount);
+        fromToken.universalApprove(address(ONE_SPLIT), amount);
 
-        uint256 beforeBalance = toToken.balanceOf(address(this));
-        oneSplit.goodSwap(
+        uint256 beforeBalance = toToken.universalBalanceOf(address(this));
+        ONE_SPLIT.goodSwap.value(fromToken.isETH() ? amount : 0)(
             fromToken,
             toToken,
             amount,
             0,
-            5,
+            1,
             0
         );
 
-        return toToken.balanceOf(address(this)).sub(beforeBalance);
+        return toToken.universalBalanceOf(address(this)).sub(beforeBalance);
     }
+}
+
+// File: contracts/interface/compound/IPriceOracle.sol
+
+pragma solidity ^0.5.0;
+
+interface IPriceOracle {
+    /**
+      * @notice Get the underlying price of a cToken asset
+      * @param cToken The cToken to get the underlying price of
+      * @return The underlying asset price mantissa (scaled by 1e18).
+      *  Zero means the price is unavailable.
+      */
+    function getUnderlyingPrice(address cToken) external view returns (uint256);
 }
 
 // File: contracts/interface/compound/ICompoundController.sol
@@ -792,7 +845,9 @@ contract ExchangeOneSplit is IHolder {
 pragma solidity ^0.5.0;
 
 
+
 interface ICompoundController {
+    function oracle() external view returns(IPriceOracle);
     function enterMarkets(address[] calldata cTokens) external returns(uint256[] memory);
     function checkMembership(address account, address cToken) external view returns (bool);
 }
@@ -805,8 +860,8 @@ pragma solidity ^0.5.0;
 
 contract ICERC20 is IERC20 {
     function comptroller() external view returns(ICompoundController);
-    function balanceOfUnderlying(address account) external view returns(uint256);
-    function borrowBalanceStored(address account) external view returns(uint256);
+    function balanceOfUnderlying(address account) external returns(uint256);
+    function borrowBalanceCurrent(address account) external returns(uint256);
 
     function mint() external payable;
     function mint(uint256 amount) external returns(uint256);
@@ -826,16 +881,27 @@ pragma solidity ^0.5.0;
 
 
 
-contract ProtocolCompound is IHolder {
-
+contract ProtocolCompound {
+    using SafeMath for uint256;
     using UniversalERC20 for IERC20;
 
-    function collateralAmount(IERC20 token) public view returns(uint256) {
+    function collateralAmount(IERC20 token) public returns(uint256) {
         return _getCToken(token).balanceOfUnderlying(address(this));
     }
 
-    function borrowAmount(IERC20 token) public view returns(uint256) {
-        return _getCToken(token).borrowBalanceStored(address(this));
+    function borrowAmount(IERC20 token) public returns(uint256) {
+        return _getCToken(token).borrowBalanceCurrent(address(this));
+    }
+
+    function _pnl(IERC20 collateral, IERC20 debt) internal returns(uint256) {
+        ICERC20 cCollateral = _getCToken(collateral);
+        ICERC20 cDebt = _getCToken(debt);
+        IPriceOracle oracle = cCollateral.comptroller().oracle();
+        return oracle.getUnderlyingPrice(address(cCollateral)).mul(collateralAmount(collateral))
+            .mul(1e18)
+            .div(
+                oracle.getUnderlyingPrice(address(cDebt)).mul(borrowAmount(debt))
+            );
     }
 
     function _deposit(IERC20 token, uint256 amount) internal {
