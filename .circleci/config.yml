@@ -14,8 +14,8 @@ jobs:
         steps:
             - checkout
             -   restore_cache:
-                  keys:
-                      - dependencies-{{ checksum "web/package.json" }}
+                    keys:
+                        - dependencies-{{ checksum "web/package.json" }}
             -   run:
                     name: Install base dependencies
                     command: yarn install --frozen-lockfile
@@ -79,12 +79,12 @@ jobs:
 
                             echo "Done!"
                         fi
-    #      - deploy:
-    #          name: Deploy Smart Contract
-    #          command: |
-    #            if [ $CIRCLE_BRANCH == release ]; then
-    #              yarn run sm:deploy:prod
-    #            fi
+            -   deploy:
+                    name: Deploy Smart Contract
+                    command: |
+                        if [ $CIRCLE_BRANCH == release ]; then
+                          yarn run sm:deploy:prod
+                        fi
     verify:
         docker:
             -   image: circleci/node:10-browsers
