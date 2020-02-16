@@ -29,9 +29,15 @@ const timeSeries = generateTimeSeries();
 })
 export class LeverageChartDialogComponent implements OnInit {
 
-  ratesHistory: number[] = [];
-  stopLoss = 0;
-  stopWin = 0;
+  assetAmount = 1;
+  initialRates2Usd = 1;
+
+  src2DstAssetRates = [];
+  rates2Usd = [];
+
+  stopLossUsd = 0;
+  stopWinUsd = 0;
+
   leverage = 1;
 
   public lineChartData: ChartDataSets[] = [];
@@ -49,7 +55,7 @@ export class LeverageChartDialogComponent implements OnInit {
   }
 
   generateHorizontalLine(value: number, color: string, label: string): ChartDataSets {
-    const line = this.ratesHistory.map(x => value);
+    const line = this.rates2Usd.map(x => value);
     return {
       data: [...line],
       fill: false,
@@ -62,31 +68,47 @@ export class LeverageChartDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    // debugger;
-    const initialAssetsRate = (this.ratesHistory && this.ratesHistory.length > 0 && this.ratesHistory[0]) || 1;
 
-    const leverageGraph = this.ratesHistory.map(x => {
-      const diff = (initialAssetsRate - x);
-      return initialAssetsRate - (diff * this.leverage);
+    const initialAssetsRate = this.initialRates2Usd || 1;
+
+    const rateGraph = this.rates2Usd.map((rate, idx) => {
+        return this.assetAmount * rate;
     });
+
+    const leverageGraph = this.src2DstAssetRates.map((x, idx) => {
+            const diff = (initialAssetsRate - x);
+            return this.assetAmount * (initialAssetsRate - (diff * this.leverage));
+      //  const diff = (this.assetAmount * initialAssetsRate - this.assetAmount * x);
+      //  return this.assetAmount * initialAssetsRate - this.assetAmount * (diff * this.leverage);
+      // const rateDiff = (initialAssetsRate - x);
+      // // const rateDiffLeverage = rateDiff * this.leverage;
+      // const assetDiff = (this.assetAmount * rateDiff) * this.leverage;
+      // //
+      // return assetDiff;
+    });
+
+      // const leverageGraph2 = this.src2DstAssetRates.map(x => {
+      //     const diff = (initialAssetsRate - x);
+      //     return initialAssetsRate - (diff * this.leverage);
+      // });
 
     const horizontalLines = [];
 
-    if (this.stopLoss) {
-      const line = this.generateHorizontalLine(this.stopLoss, '#9933CC', 'Stop Loss');
+    if (this.stopLossUsd) {
+      const line = this.generateHorizontalLine(this.stopLossUsd, '#9933CC', 'Stop Loss');
       horizontalLines.push(line);
     }
 
-    if (this.stopWin) {
-      const line = this.generateHorizontalLine(this.stopWin, '#ea262a', 'Stop Win');
+    if (this.stopWinUsd) {
+      const line = this.generateHorizontalLine(this.stopWinUsd, '#ea262a', 'Stop Win');
       horizontalLines.push(line);
     }
 
-    const initialPriceLine = this.generateHorizontalLine(initialAssetsRate, 'black', 'Intial');
+    const initialPriceLine = this.generateHorizontalLine(this.assetAmount * initialAssetsRate, 'black', 'Initial(USD)');
     initialPriceLine.borderDash = [10, 5];
     initialPriceLine.borderWidth = 0.5;
     horizontalLines.push(initialPriceLine);
-    
+
     this.lineChartOptions = {
       legend: {
         position: 'bottom'
@@ -94,8 +116,8 @@ export class LeverageChartDialogComponent implements OnInit {
       scales: {
         yAxes: [{
           ticks: {
-            suggestedMin: this.stopLoss ? this.stopLoss - 50 : 0,
-            suggestedMax: this.stopWin ? this.stopWin + 50 : undefined,
+            suggestedMin: this.stopLossUsd ? this.stopLossUsd - 50 : 0,
+            suggestedMax: this.stopWinUsd ? this.stopWinUsd + 50 : undefined,
           }
         }]
       }
@@ -103,18 +125,18 @@ export class LeverageChartDialogComponent implements OnInit {
 
     this.lineChartData = [
       {
-        data: [...this.ratesHistory],
+        data: [...rateGraph],
         fill: false,
         borderColor: 'blue',
         pointRadius: 1,
-        label: 'Eth / DAI'
+        label: `X1 (USD)`
       },
       {
         data: [...leverageGraph],
         fill: false,
         borderColor: 'blue',
         pointRadius: 0,
-        label: 'Leverage',
+        label: `Leverage X${this.leverage} (USD)`,
         borderDash: [10, 5],
         pointHoverRadius: 0
       },

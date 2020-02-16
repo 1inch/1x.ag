@@ -48,10 +48,13 @@ export class MyPositionsComponent implements OnInit {
 
     showChartDialog(position: IPosition) {
         const initialState = {
-            stopWin: position.stopWinUsd,
-            stopLoss: position.stopLossUsd,
+            assetAmount: 2,
+            initialRates2Usd: 267.67,
+            stopWinUsd: position.stopWinUsd,
+            stopLossUsd: position.stopLossUsd,
             leverage: position.leverage,
-            ratesHistory: position.ratesHistory.map( (x) => x.rate)
+            src2DstAssetRates: position.ratesHistory.map( (x) => x.rate),
+            rates2Usd: position.ratesHistory.map( (x) => x.rate)
         };
         this.modalRef = this.modalService.show(LeverageChartDialogComponent, {class: 'modal-lg', initialState});
     }

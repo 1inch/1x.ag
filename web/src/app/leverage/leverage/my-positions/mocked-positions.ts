@@ -2,11 +2,11 @@ import { IPosition } from './my-positions.component';
 
 export const mockedPositions: Array<IPosition> = [
     {
-        tokenName: 'ETH',
+        tokenName: 'ETH / DAI',
         profit: '130%',
         status: 'healthy',
         stopLossUsd: 50,
-        stopWinUsd: 450,
+        stopWinUsd: 1100,
         leverage: 2,
         ratesHistory: [
             { rate: 267.67, t: '10:00' },
@@ -37,7 +37,7 @@ export const mockedPositions: Array<IPosition> = [
         ]
     },
     {
-        tokenName: 'MKR',
+        tokenName: 'MKR / DAI',
         profit: '90%',
         status: 'healthy',
         stopLossUsd: 1110,
@@ -72,7 +72,7 @@ export const mockedPositions: Array<IPosition> = [
         ]
     },
     {
-        tokenName: 'WBTC',
+        tokenName: 'WBTC / DAI',
         profit: '1330%',
         status: 'healthy',
         stopLossUsd: 9110,
