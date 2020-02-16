@@ -59,9 +59,15 @@ function runSheduler({ collateralToken, debtToken, leverage }) {
             6. Close this positions
         */
 
-        const openPositionEvents = await contract.getOpenPositionEvents();
+        const openPositionEvents = await getOpenpositions(contract);
         for (let i = 0; i < openPositionEvents.length; i++) {
-            console.log(openPositionEvents[i]);
+            if (
+                openPositionEvents[i].params.takeProfit === '0' &&
+                openPositionEvents[i].params.stopLoss === '0'
+            ) {
+                continue;
+            }
+
             const isReady = await isReadyToClosePosition(openPositionEvents[i], collateralToken, debtToken);
             if (isReady) {
                 const tx = await contract.web3Ethereum.getTransaction(openPositionEvents[i].transactionHash);
@@ -71,6 +77,23 @@ function runSheduler({ collateralToken, debtToken, leverage }) {
     }, {});
 }
 
+async function getOpenpositions(contract) {
+    const openPositionEvents = await contract.getOpenPositionEvents();
+    const closePositionEvents = await contract.getClosePositionEvents();
+
+    const closePositionOwners = closePositionEvents.map(x => x.params.owner);
+
+    const notClosedPositions = [];
+    for (let i = 0; i < openPositionEvents.length; i++) {
+        if (
+            closePositionOwners.indexOf(openPositionEvents[i].params.owner) === -1
+        ) {
+            notClosedPositions.push(openPositionEvents[i]);
+        }
+    }
+
+    return notClosedPositions;
+}
 
 async function isReadyToClosePosition(
     position,

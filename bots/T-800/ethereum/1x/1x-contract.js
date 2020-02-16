@@ -5,7 +5,6 @@ class OneXContract {
 
     constructor(contractAddress, privateKey, connectionString = 'http://127.0.0.1:8545') {
         this.web3Ethereum = new Web3Ethereum(connectionString);
-        console.log(contractAddress)
         this.instance = this.web3Ethereum.createInstance(onexAbi, contractAddress);
     }
 
@@ -19,6 +18,21 @@ class OneXContract {
                     amount: params['1'],
                     stopLoss: params['2'],
                     takeProfit: params['3']
+                },
+                blockNumber: x.blockNumber,
+                transactionHash: x.transactionHash,
+            }
+        });
+    }
+
+    async getClosePositionEvents() {
+        const events = await getEvents(this.instance, 'ClosePosition');
+        return events.map(x => {
+            const params = x.returnValues;
+            return {
+                params: {
+                    owner: params['0'],
+                    pnl: params['1']
                 },
                 blockNumber: x.blockNumber,
                 transactionHash: x.transactionHash,
