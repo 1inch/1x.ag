@@ -9,7 +9,7 @@
     "ethereumjs-tx": "^2.1.2",
     "ethereumjs-util": "^6.2.0",
     "node-cron": "^2.0.3",
-    "rx": "^4.1.0",
+    "rxjs": "^6.5.4",
     "web3": "^1.2.6"
   },
   "devDependencies": {},

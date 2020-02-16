@@ -95,8 +95,7 @@ async function getOpenPositions(contract) {
 
         if (
             numOfOpenPositionsByUser !== numOfClosePositionsByUser &&
-            transactionQueue.pendingAddresses && // may throw transactionQueue.pendingAddresses needs to check
-            transactionQueue.pendingAddresses.indexOf(owner) === -1
+            transactionQueue.pendingAddress !== owner
 
         ) {
             notClosedPositions.push(openPositionEvents[i]);

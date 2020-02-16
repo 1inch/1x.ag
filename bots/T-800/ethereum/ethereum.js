@@ -50,8 +50,10 @@ class Web3Ethereum {
 
         return new Promise((resolve) => {
             this.web3.eth.sendSignedTransaction(rawTx)
-                .on('receipt', (hash) => {
-                    resolve(hash);
+                .on('confirmation', (num, hash) => {
+                    if (num === 1) {
+                        resolve(hash);
+                    }
                 });
         })
     }
