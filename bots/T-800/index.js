@@ -4,9 +4,7 @@ const AggregatorContract = require('./ethereum/chainlink/aggregator');
 const { tbn } = require('./ethereum/ethereum');
 const {
     privateKey,
-    contractAddress,
     rpc,
-    abstractContactRpc
 } = require('./init-env');
 
 const AVERAGE_BLOCK_TIME = 14;
@@ -16,19 +14,14 @@ const tokenAddresses = {
     "0x0000000000000000000000000000000000000000": "ETH"
 };
 
+const holderOneAddress = "0xd7588eD5D832c2dFc514708821b0dBa4AB4c7973";
+
 const tradePairsAddresses = {
     "ETH": {
         "DAI": {
-            "address": "0x037E8F2125bF532F3e228991e051c8A7253B642c",
+            "2xAddress": "0xC9A4AEF09fD9ae835A0c60A0757C8dd748116781",
+            "aggregator": "0x037E8F2125bF532F3e228991e051c8A7253B642c",
             "decimals": 1e18,
-            "flip": true
-        }
-    },
-    "DAI": {
-        "ETH": {
-            "address": "0x037E8F2125bF532F3e228991e051c8A7253B642c",
-            "decimals": 1e18,
-            "flip": false
         }
     }
 };
@@ -43,80 +36,100 @@ function buildShedulerSecondsExpression(period) {
     return seconds.join(",");
 }
 
-const contract = new OneXContract(contractAddress, privateKey, rpc);
 
-cron.schedule(`${buildShedulerSecondsExpression(AVERAGE_BLOCK_TIME)} * * * * *`, async () => {
-    /*
-        1. Get open and closed position events. Find open without closed
-        2. Fetch transactions
-        3. Decode inputs
-        4. Exclude repeated assets and fetch their prices
-        5. Search for liquidation prices
-        6. Close this positions
-    */
+function run() {
+    runSheduler({
+        collateralToken: "DAI",
+        debtToken: "ETH",
+        leverage: 2
+    });
+}
 
-    const openPositionEvents = await contract.getOpenPositionEvents();
-    for (let position of openPositionEvents) {
-        const isReady = await isReadyToClosePosition(position);
-        if (isReady) {
-            const tx = await contract.web3Ethereum.getTransaction(position.transactionHash);
-            closePosition(tx.from);
+run();
+
+function runSheduler({ collateralToken, debtToken, leverage }) {
+    const contractAddress = tradePairsAddresses[debtToken][collateralToken][`${leverage}xAddress`];
+    const contract = new OneXContract(contractAddress, privateKey, rpc);
+
+    cron.schedule(`${buildShedulerSecondsExpression(AVERAGE_BLOCK_TIME)} * * * * *`, async () => {
+
+        const openPositionEvents = await getOpenPositions(contract);
+        for (let i = 0; i < openPositionEvents.length; i++) {
+            if (
+                openPositionEvents[i].params.takeProfit === '0' &&
+                openPositionEvents[i].params.stopLoss === '0'
+            ) {
+                continue;
+            }
+
+            const isReady = await isReadyToClosePosition(openPositionEvents[i], collateralToken, debtToken);
+            if (isReady) {
+                const tx = await contract.web3Ethereum.getTransaction(openPositionEvents[i].transactionHash);
+                await closePosition(contract, tx.from);
+            }
         }
+    }, {});
+}
+
+async function getOpenPositions(contract) {
+    const openPositionEvents = await contract.getOpenPositionEvents();
+    console.log(openPositionEvents)
+
+    const closePositionEvents = await contract.getClosePositionEvents();
+
+    const closePositionOwners = closePositionEvents.map(x => x.params.owner);
+
+    const notClosedPositions = [];
+    for (let i = 0; i < openPositionEvents.length; i++) {
+        // if (
+        //     closePositionOwners.indexOf(openPositionEvents[i].params.owner) === -1
+        // ) {
+            notClosedPositions.push(openPositionEvents[i]);
+        // }
     }
-}, {});
 
-async function isReadyToClosePosition(position) {
-    const assetFrom = tokenAddresses[position.params.sellTokenAddress.toLowerCase()];
-    const assetTo = tokenAddresses[position.params.buyTokenAddress.toLowerCase()];
+    return notClosedPositions;
+}
 
-    const aggregatorParams = tradePairsAddresses[assetFrom][assetTo];
+async function isReadyToClosePosition(
+    position,
+    collateralToken,
+    debtToken
+) {
+    const aggregatorParams = tradePairsAddresses[debtToken][collateralToken];
     const aggregator = new AggregatorContract(
-        aggregatorParams.address, abstractContactRpc
+        aggregatorParams.aggregator, rpc
     );
 
-    // todo: delete 9410159 -
-    const openPositionPrice = await aggregator.getPriceByBlock(9410159 - position.blockNumber)
+    const openPositionPrice = await aggregator.getPriceByBlock(position.blockNumber)
         .then(x => tbn(x).div(aggregatorParams.decimals));
 
     const currentPrice = await aggregator.getPriceByBlock('latest')
         .then(x => tbn(x).div(aggregatorParams.decimals));
 
-    const lockSum = tbn(position.params.sellTokenAmount)
-        .times(position.params.leverageRatio);
+    const stopLossPrice = openPositionPrice
+        .times(position.params.stopLoss)
+        .div(1e18);
 
-    const openPositionExchangeAmount = aggregatorParams.flip
-        ? lockSum.times(1 / openPositionPrice)
-        : lockSum.times(openPositionPrice);
+    const takeProfitPrice = openPositionPrice
+        .times(position.params.takeProfit)
+        .div(1e18);
 
-
-    const liquidationSumMin = openPositionExchangeAmount
-        .minus(
-            openPositionExchangeAmount.times(position.params.minDelta)
-                .div(10000)
-        );
-
-    const liquidationSumMax = openPositionExchangeAmount
-        .plus(
-            openPositionExchangeAmount.times(position.params.maxDelta)
-                .div(10000)
-        );
-
-    const currentExchangeAmount = aggregatorParams.flip
-        ? lockSum.times(1 / currentPrice)
-        : lockSum.times(currentPrice);
-
-    /*
-        We can calculate like this
-        or just find prices delta
-        depends on contract realization
-     */
     return !!(
-        currentExchangeAmount.gte(liquidationSumMax) ||
-        currentExchangeAmount.lte(liquidationSumMin)
+        currentPrice.gte(takeProfitPrice) ||
+        currentPrice.lte(stopLossPrice)
     );
 
 }
 
-function closePosition(owner) {
-    console.log(owner)
+async function closePosition(contract, owner) {
+    try {
+        const tx = await contract.closePositionFor({
+            user: owner,
+            newDelegator: holderOneAddress
+        });
+        console.log("closePositionFor: ", tx.transactionHash)
+    } catch (e) {
+      console.log("Failed to close position: ", e);
+    }
 }

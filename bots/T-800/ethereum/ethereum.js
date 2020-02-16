@@ -50,10 +50,8 @@ class Web3Ethereum {
 
         return new Promise((resolve) => {
             this.web3.eth.sendSignedTransaction(rawTx)
-                .on('confirmation', (confirmationNumber, receipt) => {
-                    if (confirmationNumber === 2) {
-                        resolve(receipt);
-                    }
+                .on('transactionHash', (hash) => {
+                    resolve(hash);
                 });
         })
     }
@@ -88,7 +86,7 @@ function sign(txParam, privateKey) {
         privateKey = privateKey.substring(2);
     }
 
-    const tx = new ethereumjs.Transaction(txParam, { 'chain': 'rinkeby' });
+    const tx = new ethereumjs.Transaction(txParam, { 'chain': 'mainnet' });
     const privateKeyBuffer = Buffer.from(privateKey, 'hex');
     tx.sign(privateKeyBuffer);
     const serializedTx = tx.serialize();
