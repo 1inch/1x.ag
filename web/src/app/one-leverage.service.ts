@@ -76,15 +76,16 @@ export class OneLeverageService {
 
         const leverageSymbol = leverageRatio + 'x' + collateralTokenSymbol + debtTokenSymbol;
         const leverageContract = await this.getTokenContract(leverageSymbol);
+
         const callData = leverageContract.methods.openPosition(
             amount,
             (await this.getHolderContract(leverageProvider)).address,
-            ethers.utils.bigNumberify(1).sub(
-                ethers.utils.bigNumberify(stopLoss).div(100)
-            ).mul(1e9).mul(1e9),
-            ethers.utils.bigNumberify(1).add(
-                ethers.utils.bigNumberify(takeProfit).div(100)
-            ).mul(1e9).mul(1e9)
+            ethers.utils.bigNumberify(1e9).sub(
+                ethers.utils.bigNumberify(stopLoss * 10000).mul(1e9).div(1e2).div(10000)
+            ).mul(1e9),
+            ethers.utils.bigNumberify(1e9).add(
+                ethers.utils.bigNumberify(takeProfit * 10000).mul(1e9).div(1e2).div(10000)
+            ).mul(1e9)
         )
             .encodeABI();
 
