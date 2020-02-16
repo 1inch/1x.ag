@@ -151,7 +151,7 @@ export class TokenAmountFieldComponent implements OnInit {
             if (this.token === 'ETH') {
 
                 this.tokenBalanceBN = ethers.utils.bigNumberify(
-                    await this.web3Service.web3Provider.eth.getBalance(
+                    await (await this.web3Service.getWeb3Provider()).eth.getBalance(
                         this.web3Service.walletAddress
                     )
                 )

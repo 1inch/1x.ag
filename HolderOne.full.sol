@@ -530,6 +530,7 @@ contract HolderBase is IHolder {
     using UniversalERC20 for IERC20;
 
     address public owner = msg.sender;
+    address public delegate;
 
     modifier onlyOwner {
         require(msg.sender == owner, "Access denied");
