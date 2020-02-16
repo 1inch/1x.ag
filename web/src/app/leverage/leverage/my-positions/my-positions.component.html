@@ -26,11 +26,11 @@
                     <tbody>
                     <tr *ngFor="let position of positions">
                         <td>{{position.tokenName}}</td>
-                        <td>{{position.leverageModel}}x</td>
+                        <td>{{position.leverage}}x</td>
                         <td>{{position.profit}}</td>
                         <td>{{position.status}}</td>
-                        <td>{{position.stopLoss}}</td>
-                        <td>{{position.stopWin}}</td>
+                        <td>${{position.stopLossUsd}}</td>
+                        <td>${{position.stopWinUsd}}</td>
                         <td>
                             <button (click)="showChartDialog(position)" class="btn btn-success btn-sm mr-1">
                                 chart

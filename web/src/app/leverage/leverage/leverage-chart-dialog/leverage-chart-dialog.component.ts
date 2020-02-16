@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
-  ChartDataSets,
-  ChartOptions,
-  ChartType,
+    ChartDataSets,
+    ChartOptions,
+    ChartType,
 } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Label } from 'ng2-charts';
 
 
 // TODO: fix
@@ -62,6 +62,7 @@ export class LeverageChartDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    // debugger;
     const initialAssetsRate = (this.ratesHistory && this.ratesHistory.length > 0 && this.ratesHistory[0]) || 1;
 
     const leverageGraph = this.ratesHistory.map(x => {
@@ -71,12 +72,12 @@ export class LeverageChartDialogComponent implements OnInit {
 
     const horizontalLines = [];
 
-    if (this.stopLoss !== 0) {
+    if (this.stopLoss) {
       const line = this.generateHorizontalLine(this.stopLoss, '#9933CC', 'Stop Loss');
       horizontalLines.push(line);
     }
 
-    if (this.stopWin !== 0) {
+    if (this.stopWin) {
       const line = this.generateHorizontalLine(this.stopWin, '#ea262a', 'Stop Win');
       horizontalLines.push(line);
     }
@@ -85,7 +86,7 @@ export class LeverageChartDialogComponent implements OnInit {
     initialPriceLine.borderDash = [10, 5];
     initialPriceLine.borderWidth = 0.5;
     horizontalLines.push(initialPriceLine);
-
+    
     this.lineChartOptions = {
       legend: {
         position: 'bottom'
@@ -93,8 +94,8 @@ export class LeverageChartDialogComponent implements OnInit {
       scales: {
         yAxes: [{
           ticks: {
-            suggestedMin: this.stopLoss - 50,
-            suggestedMax: this.stopWin + 50,
+            suggestedMin: this.stopLoss ? this.stopLoss - 50 : 0,
+            suggestedMax: this.stopWin ? this.stopWin + 50 : undefined,
           }
         }]
       }
