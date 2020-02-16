@@ -11,9 +11,8 @@ export class ConfigurationService {
     public TOKEN_HELPER_CONTRACT_ADDRESS = '0x1ed7221c4a43632e3ed491a8a28bbebd0b450ad8';
     public ETH_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
-    public ETHDAI5x = '0x63cee5d30ea290d051779391f7d27057ef86e2c7';
-    public DAIETH5x = '0x6168d4bb018cc70fc91219b25f1a18d2055928ca';
-    public HOLDER_ONE_AAVE_COMPOUND = '0xef2153f507a7364ad3356f878e13d5f1b295c5b6';
+    public ETHDAI2x = '0x20a1d01e03d65495ae157d47e4519eceacb608f6';
+    public HOLDER_ONE_AAVE_COMPOUND = '0x723527deeeac76c155abbf10afd964d82399f70e';
 
     public CONTRACT_ENS = '1xAggregator.eth';
 

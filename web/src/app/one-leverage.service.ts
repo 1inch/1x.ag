@@ -34,22 +34,13 @@ export class OneLeverageService {
 
         switch (leverageTokenSymbol) {
 
-            case '5xETHDAI':
+            case 'ETHDAI2x':
 
                 return new (await this.web3Service.getWeb3Provider()).eth.Contract(
                     // @ts-ignore
                     OneLeverageABI,
-                    this.configurationService.ETHDAI5x
+                    this.configurationService.ETHDAI2x
                 );
-
-            case '5xDAIETH':
-
-                return new (await this.web3Service.getWeb3Provider()).eth.Contract(
-                    // @ts-ignore
-                    OneLeverageABI,
-                    this.configurationService.DAIETH5x
-                );
-
         }
     }
 
