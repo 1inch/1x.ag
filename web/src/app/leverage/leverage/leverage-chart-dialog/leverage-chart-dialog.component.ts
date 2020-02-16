@@ -1,22 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+    ChartDataSets,
+    ChartOptions,
+    ChartType,
+} from 'chart.js';
 import { Label } from 'ng2-charts';
-
-// TODO: fix
-function generateTimeSeries(): string[] {
-    const result = [];
-    for (let i = 0; i < 24; i++) {
-        const d = new Date();
-        d.setHours(d.getHours() - i);
-        result.push(`${d.getHours()}:00`);
-    }
-    return result;
-}
-
-const hours = generateTimeSeries();
-const timeSeries = generateTimeSeries();
-
-//
 
 @Component({
     selector: 'app-leverage-chart-dialog',
@@ -25,14 +13,20 @@ const timeSeries = generateTimeSeries();
 })
 export class LeverageChartDialogComponent implements OnInit {
 
-    ratesHistory: number[] = [];
-    stopLoss = 0;
-    stopWin = 0;
+    assetAmount = 1;
+    initialRates2Usd = 1;
+
+    src2DstAssetRates = [];
+    rates2Usd: Array<{ rate: number, t: string }> = [];
+
+    stopLossUsd = 0;
+    stopWinUsd = 0;
+
     leverage = 1;
 
     public lineChartData: ChartDataSets[] = [];
 
-    public lineChartLabels: Label[] = [...hours];
+    public lineChartLabels: Label[] = [];
 
     public lineChartOptions: ChartOptions = {};
 
@@ -45,7 +39,7 @@ export class LeverageChartDialogComponent implements OnInit {
     }
 
     generateHorizontalLine(value: number, color: string, label: string): ChartDataSets {
-        const line = this.ratesHistory.map(x => value);
+        const line = this.rates2Usd.map(x => value);
         return {
             data: [...line],
             fill: false,
@@ -58,26 +52,37 @@ export class LeverageChartDialogComponent implements OnInit {
     }
 
     ngOnInit() {
-        const initialAssetsRate = (this.ratesHistory && this.ratesHistory.length > 0 && this.ratesHistory[0]) || 1;
+        this.lineChartLabels = this.rates2Usd.map(x => x.t);
 
-        const leverageGraph = this.ratesHistory.map(x => {
+        const initialAssetsRate = this.initialRates2Usd || 1;
+        const rateGraph = this.rates2Usd
+            .map(x => x.rate)
+            .map((rate, idx) => {
+                return this.assetAmount * rate;
+            })
+            .map((result) => {
+                return result.toFixed(2);
+            });
+
+        const leverageGraph = this.src2DstAssetRates.map((x, idx) => {
             const diff = (initialAssetsRate - x);
-            return initialAssetsRate - (diff * this.leverage);
+            const result = this.assetAmount * (initialAssetsRate - (diff * this.leverage));
+            return result.toFixed(2);
         });
 
         const horizontalLines = [];
 
-        if (this.stopLoss !== 0) {
-            const line = this.generateHorizontalLine(this.stopLoss, '#707070', 'Stop Loss');
+        if (this.stopLossUsd) {
+            const line = this.generateHorizontalLine(this.stopLossUsd, '#afafaf', 'Stop Loss');
             horizontalLines.push(line);
         }
 
-        if (this.stopWin !== 0) {
-            const line = this.generateHorizontalLine(this.stopWin, '#707070', 'Stop Win');
+        if (this.stopWinUsd) {
+            const line = this.generateHorizontalLine(this.stopWinUsd, '#afafaf', 'Stop Win');
             horizontalLines.push(line);
         }
 
-        const initialPriceLine = this.generateHorizontalLine(initialAssetsRate, '#707070', 'Intial');
+        const initialPriceLine = this.generateHorizontalLine(this.assetAmount * initialAssetsRate, '#afafaf', 'Initial(USD)');
         initialPriceLine.borderDash = [10, 5];
         initialPriceLine.borderWidth = 0.5;
         horizontalLines.push(initialPriceLine);
@@ -89,8 +94,8 @@ export class LeverageChartDialogComponent implements OnInit {
             scales: {
                 yAxes: [{
                     ticks: {
-                        suggestedMin: this.stopLoss - 50,
-                        suggestedMax: this.stopWin + 50
+                        suggestedMin: this.stopLossUsd ? this.stopLossUsd - 50 : 0,
+                        suggestedMax: this.stopWinUsd ? this.stopWinUsd + 50 : undefined,
                     }
                 }]
             }
@@ -98,23 +103,25 @@ export class LeverageChartDialogComponent implements OnInit {
 
         this.lineChartData = [
             {
-                data: [...this.ratesHistory],
+                data: [...rateGraph],
                 fill: false,
-                steppedLine: false,
-                borderColor: '#1c649c',
-                pointBorderColor: '#1c649c',
-                pointBackgroundColor: '#1c649c',
+                borderColor: '#1cb0ff',
+                pointBorderColor: '#1cb0ff',
+                pointBackgroundColor: '#1cb0ff',
                 pointRadius: 5,
-                label: 'Eth / DAI'
+                pointBorderWidth: 0,
+                label: `X1 (USD)`
             },
             {
                 data: [...leverageGraph],
                 fill: false,
-                borderColor: '#e01f71',
-                pointRadius: 0,
-                label: 'Leverage',
+                borderColor: '#ff114c',
+                pointBorderColor: '#ff114c',
+                pointBackgroundColor: '#ff114c',
+                pointRadius: 5,
+                pointBorderWidth: 0,
+                label: `Leverage X${this.leverage} (USD)`,
                 borderDash: [10, 5],
-                pointHoverRadius: 5
             },
             ...horizontalLines
         ];

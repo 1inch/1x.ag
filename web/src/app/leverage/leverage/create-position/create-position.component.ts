@@ -29,7 +29,7 @@ export class CreatePositionComponent implements OnInit {
     gasPrice;
     tokenBlackList = [];
 
-    liquidityProviders = [
+    leverageProviders = [
         {
             name: 'Compound',
             icon: 'assets/compound-v2.svg'
@@ -53,7 +53,8 @@ export class CreatePositionComponent implements OnInit {
         'DAI',
         'WBTC',
         'ZRX',
-        'MKR'
+        'MKR',
+        'tBTC'
     ];
 
     loading = true;
@@ -61,10 +62,10 @@ export class CreatePositionComponent implements OnInit {
     error = false;
     done = false;
 
-    liquidityProvider = localStorage.getItem('leverageLiquidityProvider') ?
-        this.liquidityProviders.filter(provider => provider.name ===
-            localStorage.getItem('leverageLiquidityProvider'))[0] :
-        this.liquidityProviders.filter(provider => provider.name === 'Compound')[0];
+    leverageProvider = localStorage.getItem('leverageProvider') ?
+        this.leverageProviders.filter(provider => provider.name ===
+            localStorage.getItem('leverageProvider'))[0] :
+        this.leverageProviders.filter(provider => provider.name === 'Compound')[0];
 
     constructor(
         public configurationService: ConfigurationService,
@@ -181,7 +182,7 @@ export class CreatePositionComponent implements OnInit {
             const leverageTokenSymbol = this.oneLeverageService.getLeveregaTokenSymbol(
                 this.marginToken,
                 this.payToken,
-                this.leverageModel
+                Number(this.leverageModel)
             );
 
             const leverageTokenAddress = (await this.oneLeverageService.getTokenContract(
@@ -189,11 +190,11 @@ export class CreatePositionComponent implements OnInit {
             )).address;
 
             if (
-                !this.tokenService.isApproved(
+                !(await this.tokenService.isApproved(
                     this.payToken,
                     leverageTokenAddress,
                     this._amountBN
-                )
+                ))
             ) {
 
                 await this.tokenService.approve(
@@ -206,7 +207,8 @@ export class CreatePositionComponent implements OnInit {
             const transactionHash = await this.oneLeverageService.openPosition(
                 this.marginToken,
                 this.payToken,
-                this.leverageModel,
+                Number(this.leverageModel),
+                this.leverageProvider.name,
                 this._amountBN
             );
 
@@ -220,9 +222,9 @@ export class CreatePositionComponent implements OnInit {
         this.loading = false;
     }
 
-    onLiquidityProviderSelect($event: any) {
+    onLeverageProviderSelect($event: any) {
 
-        this.liquidityProvider = $event;
-        localStorage.setItem('leverageLiquidityProvider', $event.name);
+        this.leverageProvider = $event;
+        localStorage.setItem('leverageProvider', $event.name);
     }
 }

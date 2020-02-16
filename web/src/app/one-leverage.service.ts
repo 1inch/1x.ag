@@ -53,11 +53,11 @@ export class OneLeverageService {
         return leverageRatio + 'x' + collateralTokenSymbol + debtTokenSymbol;
     }
 
-    async getHolderContract(leverageTokenSymbol: string) {
+    async getHolderContract(leverageProvider: string) {
 
-        switch (leverageTokenSymbol) {
+        switch (leverageProvider) {
 
-            case '2xETHDAI':
+            case 'Compound':
 
                 return this.holderOneAaveCompoundContract;
         }
@@ -67,6 +67,7 @@ export class OneLeverageService {
         collateralTokenSymbol: string,
         debtTokenSymbol: string,
         leverageRatio: number,
+        leverageProvider: string,
         amount: BigNumber
     ): Promise<string> {
 
@@ -74,7 +75,7 @@ export class OneLeverageService {
         const leverageContract = await this.getTokenContract(leverageSymbol);
         const callData = leverageContract.methods.openPosition(
             amount,
-            (await this.getHolderContract(leverageSymbol)).address
+            (await this.getHolderContract(leverageProvider)).address
         )
             .encodeABI();
 
@@ -88,20 +89,10 @@ export class OneLeverageService {
 
         return new Promise((resolve, reject) => {
 
-            let txHash;
-
             tx
                 .once('transactionHash', async (hash) => {
 
-                    txHash = hash;
-                })
-                .once('receipt', async (receipt) => {
-
-                    resolve(txHash);
-                })
-                .on('confirmation', async (confirmation) => {
-
-                    resolve(txHash);
+                    resolve(hash);
                 })
                 .on('error', (err) => {
 

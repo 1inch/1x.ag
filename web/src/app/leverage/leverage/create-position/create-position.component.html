@@ -17,7 +17,7 @@
                 <div *ngIf="done || error" class="mb-3">
 
                     <ngb-alert (close)="done = false" *ngIf="done" class="mb-1" type="success">
-                        Swap transaction was successfully sent.<br> <a
+                        Transaction was successfully sent.<br> <a
                         [href]="'https://etherscan.io/tx/' + transactionHash"
                         target="_blank">{{transactionHash}}</a>
                     </ngb-alert>
@@ -77,10 +77,10 @@
                 <div class="form-row">
                     <div class="form-group col-12 col-md-6 ml-auto mr-auto">
                         <oi-option-selector
-                            id="liquidityProvider"
-                            [option]="liquidityProvider"
-                            [options]="liquidityProviders"
-                            (onOptionSelect)="onLiquidityProviderSelect($event)"
+                            id="leverageProvider"
+                            [option]="leverageProvider"
+                            [options]="leverageProviders"
+                            (onOptionSelect)="onLeverageProviderSelect($event)"
                         ></oi-option-selector>
                     </div>
                 </div>
