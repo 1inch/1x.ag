@@ -1,0 +1,12 @@
+type OpenPosition @entity {
+  id: ID!
+  owner: Bytes! # address
+  amount: BigInt!
+  liquidationAmountMin: BigInt!
+  liquidationAmountMax: BigInt!
+}
+
+type ClosePosition @entity {
+  id: ID!
+  owner: Bytes! # address
+}

@@ -44,6 +44,15 @@ export class OneLeverageService {
         }
     }
 
+    getLeveregaTokenSymbol(
+        collateralTokenSymbol: string,
+        debtTokenSymbol: string,
+        leverageRatio: number
+    ) {
+
+        return leverageRatio + 'x' + collateralTokenSymbol + debtTokenSymbol;
+    }
+
     async getHolderContract(leverageTokenSymbol: string) {
 
         switch (leverageTokenSymbol) {
@@ -55,13 +64,49 @@ export class OneLeverageService {
     }
 
     async openPosition(
-        leverageTokenSymbol: string,
+        collateralTokenSymbol: string,
+        debtTokenSymbol: string,
+        leverageRatio: number,
         amount: BigNumber
-    ) {
+    ): Promise<string> {
 
-        return (await this.getTokenContract(leverageTokenSymbol)).methods.openPosition(
+        const leverageSymbol = leverageRatio + 'x' + collateralTokenSymbol + debtTokenSymbol;
+        const leverageContract = await this.getTokenContract(leverageSymbol);
+        const callData = leverageContract.methods.openPosition(
             amount,
-            (await this.getHolderContract(leverageTokenSymbol)).address
-        );
+            (await this.getHolderContract(leverageSymbol)).address
+        )
+            .encodeABI();
+
+        const tx = this.web3Service.txProvider.eth.sendTransaction({
+            from: this.web3Service.walletAddress,
+            to: leverageContract.address,
+            value: debtTokenSymbol === 'ETH' ? amount : 0,
+            gasPrice: this.configurationService.fastGasPrice,
+            data: callData
+        });
+
+        return new Promise((resolve, reject) => {
+
+            let txHash;
+
+            tx
+                .once('transactionHash', async (hash) => {
+
+                    txHash = hash;
+                })
+                .once('receipt', async (receipt) => {
+
+                    resolve(txHash);
+                })
+                .on('confirmation', async (confirmation) => {
+
+                    resolve(txHash);
+                })
+                .on('error', (err) => {
+
+                    reject(err);
+                });
+        });
     }
 }
