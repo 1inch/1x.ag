@@ -1,0 +1,133 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "contract LoanHolder",
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "name": "ClosePosition",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sellTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sellTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "buyTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "leverageRatio",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "minSum",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxSum",
+                "type": "uint256"
+            }
+        ],
+        "name": "OpenPosition",
+        "type": "event"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "contract LoanHolder",
+                "name": "holder",
+                "type": "address"
+            }
+        ],
+        "name": "closePosition",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "expectedReturn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "inLoan",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sellTokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "sellTokenAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "buyTokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "leverageRatio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minSum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxSum",
+                "type": "uint256"
+            }
+        ],
+        "name": "openPosition",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]
