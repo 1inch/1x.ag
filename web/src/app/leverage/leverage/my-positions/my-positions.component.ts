@@ -20,6 +20,7 @@ export interface IPosition {
     styleUrls: ['./my-positions.component.scss']
 })
 export class MyPositionsComponent implements OnInit {
+    // TODO: make mocks more stupid, add parameters calculation
     positions = mockedPositions;
     modalRef: BsModalRef;
     message: string;

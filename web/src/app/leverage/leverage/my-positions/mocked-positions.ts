@@ -1,5 +1,6 @@
 import { IPosition } from './my-positions.component';
 
+// TODO: calculation of 'profit' and 'take profit' which is 'stopWinUsd' at the moment
 export const mockedPositions: Array<IPosition> = [
     {
         tokenName: 'ETH / DAI',
