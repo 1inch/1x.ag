@@ -118,8 +118,8 @@ workflows:
                                 - release
                             ignore:
                                 - gh-pages
-#            -   verify:
-#                    filters:
-#                        branches:
-#                            ignore:
-#                                - gh-pages
+            -   verify:
+                    filters:
+                        branches:
+                            ignore:
+                                - gh-pages
