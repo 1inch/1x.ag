@@ -5,6 +5,7 @@ import { Web3Service } from '../../../web3.service';
 import { ethers } from 'ethers';
 import { TokenService } from '../../../token.service';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { OneLeverageService } from '../../../one-leverage.service';
 
 @Component({
     selector: 'app-step1',
@@ -68,7 +69,8 @@ export class CreatePositionComponent implements OnInit {
     constructor(
         public configurationService: ConfigurationService,
         public tokenService: TokenService,
-        public web3Service: Web3Service
+        public web3Service: Web3Service,
+        public oneLeverageService: OneLeverageService
     ) {
     }
 
@@ -170,16 +172,52 @@ export class CreatePositionComponent implements OnInit {
         this.marked = e.target.checked;
     }
 
-    create() {
+    async create() {
 
         this.loading = true;
 
-        setTimeout(() => {
+        try {
 
-            this.loading = false;
+            const leverageTokenSymbol = this.oneLeverageService.getLeveregaTokenSymbol(
+                this.marginToken,
+                this.payToken,
+                this.leverageModel
+            );
+
+            const leverageTokenAddress = (await this.oneLeverageService.getTokenContract(
+                leverageTokenSymbol
+            )).address;
+
+            if (
+                !this.tokenService.isApproved(
+                    this.payToken,
+                    leverageTokenAddress,
+                    this._amountBN
+                )
+            ) {
+
+                await this.tokenService.approve(
+                    this.payToken,
+                    leverageTokenAddress,
+                    this._amountBN
+                );
+            }
+
+            const transactionHash = await this.oneLeverageService.openPosition(
+                this.marginToken,
+                this.payToken,
+                this.leverageModel,
+                this._amountBN
+            );
+
+            this.transactionHash = transactionHash;
             this.done = true;
-            this.transactionHash = '0x5565dc0631e50b776ebef819cb334093b6f1f102772d084f95e580523825cdcd';
-        }, 10000);
+        } catch (e) {
+
+            console.error(e);
+        }
+
+        this.loading = false;
     }
 
     onLiquidityProviderSelect($event: any) {
