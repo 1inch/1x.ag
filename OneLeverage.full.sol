@@ -562,11 +562,16 @@ pragma solidity ^0.5.0;
 
 
 contract IHolder {
+    function stopLoss() public view returns(uint256);
+    function takeProfit() public view returns(uint256);
+
     function openPosition(
         IERC20 collateral,
         IERC20 debt,
         uint256 amount,
-        uint256 leverageRatio
+        uint256 leverageRatio,
+        uint256 _stopLoss,
+        uint256 _takeProfit
     )
         external
         payable
@@ -579,21 +584,9 @@ contract IHolder {
     )
         external;
 
-    function collateralAmount(IERC20 token) public view returns(uint256);
-    function borrowAmount(IERC20 token) public view returns(uint256);
-
-    // Internal API
-
-    function _flashLoan(IERC20 asset, uint256 amount, bytes memory data) internal;
-    function _repayFlashLoan(IERC20 token, uint256 amount) internal;
-
-    function _exchange(IERC20 fromToken, IERC20 toToken, uint256 amount) internal returns(uint256);
-
-    function _deposit(IERC20 token, uint256 amount) internal;
-    function _redeem(IERC20 token, uint256 amount) internal;
-    function _redeemAll(IERC20 token) internal;
-    function _borrow(IERC20 token, uint256 amount) internal;
-    function _repay(IERC20 token, uint256 amount) internal;
+    function collateralAmount(IERC20 token) public returns(uint256);
+    function borrowAmount(IERC20 token) public returns(uint256);
+    function pnl(IERC20 collateral, IERC20 debt, uint256 leverageRatio) public returns(uint256);
 }
 
 // File: contracts/HolderProxy.sol
@@ -603,8 +596,8 @@ pragma solidity ^0.5.0;
 
 contract HolderProxy {
 
-    address public owner = msg.sender;
     address public delegate;
+    address public owner = msg.sender;
 
     function upgradeDelegate(address newDelegate) public {
         require(msg.sender == owner, "Access denied");
@@ -614,13 +607,19 @@ contract HolderProxy {
     }
 
     function() external payable {
-        require(delegate != address(0), "Delegate not initialized");
+        address _impl = delegate;
+        require(_impl != address(0), "Delegate not initialized");
+
         assembly {
-            let _target := sload(0)
-            calldatacopy(0x0, 0x0, calldatasize)
-            let result := delegatecall(gas, _target, 0x0, calldatasize, 0x0, 0)
-            returndatacopy(0x0, 0x0, returndatasize)
-            switch result case 0 {revert(0, 0)} default {return (0, returndatasize)}
+            let ptr := mload(0x40)
+            calldatacopy(ptr, 0, calldatasize)
+            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0)
+            let size := returndatasize
+            returndatacopy(ptr, 0, size)
+
+            switch result
+            case 0 { revert(ptr, size) }
+            default { return(ptr, size) }
         }
     }
 }
@@ -871,6 +870,7 @@ pragma solidity ^0.5.0;
 
 
 
+
 contract OneLeverage is ERC20, ERC20Detailed {
 
     using UniversalERC20 for IERC20;
@@ -881,6 +881,18 @@ contract OneLeverage is ERC20, ERC20Detailed {
 
     mapping(address => IHolder) public holders;
 
+    event OpenPosition(
+        address indexed owner,
+        uint256 amount,
+        uint256 stopLoss,
+        uint256 takeProfit
+    );
+
+    event ClosePosition(
+        address indexed owner,
+        uint256 pnl
+    );
+
     constructor(
         string memory name,
         string memory symbol,
@@ -888,8 +900,8 @@ contract OneLeverage is ERC20, ERC20Detailed {
         IERC20 debtToken,
         uint256 leverageRatio
     )
-    public
-    ERC20Detailed(name, symbol, 18)
+        public
+        ERC20Detailed(name, symbol, 18)
     {
         require(leverageRatio > 1, "Leverage ratio is too small");
         require(leverageRatio <= 10, "Leverage ratio is too huge");
@@ -899,8 +911,12 @@ contract OneLeverage is ERC20, ERC20Detailed {
         leverage = leverageRatio;
     }
 
-    function openPosition(uint256 amount, address newDelegate) external payable {
-
+    function openPosition(
+        uint256 amount,
+        address newDelegate,
+        uint256 stopLoss,
+        uint256 takeProfit
+    ) external payable {
         require(balanceOf(msg.sender) == 0, "Can't open second position");
 
         debt.universalTransferFrom(msg.sender, address(this), amount);
@@ -915,19 +931,40 @@ contract OneLeverage is ERC20, ERC20Detailed {
             uint256(- 1)
         );
 
-        uint256 balance = holder.openPosition.value(msg.value)(collateral, debt, amount, leverage);
+        uint256 balance = holder.openPosition.value(msg.value)(collateral, debt, amount, leverage, stopLoss, takeProfit);
         _mint(msg.sender, balance);
+        emit OpenPosition(msg.sender, balance, stopLoss, takeProfit);
     }
 
     function closePosition(address newDelegate) external {
-        require(balanceOf(msg.sender) != 0, "Can't close non-existing position");
+        closePositionFor(msg.sender, newDelegate);
+    }
 
-        IHolder holder = getOrCreateHolder(msg.sender);
+    function closePositionFor(address user, address newDelegate) public {
+        require(balanceOf(user) != 0, "Can't close non-existing position");
+
+        IHolder holder = getOrCreateHolder(user);
         if (newDelegate != address(0)) {
             HolderProxy(address(uint160(address(holder)))).upgradeDelegate(newDelegate);
         }
-        holder.closePosition(collateral, debt, msg.sender);
-        _burn(msg.sender, balanceOf(msg.sender));
+
+        uint256 pnl = holder.pnl(collateral, debt, leverage);
+        require(
+            msg.sender == user
+            || (
+                holder.stopLoss() != 0 &&
+                holder.stopLoss() <= pnl
+            )
+            || (
+                holder.takeProfit() != 0 &&
+                holder.takeProfit() >= pnl
+            ),
+            "Can close own position or position available for liquidation"
+        );
+
+        holder.closePosition(collateral, debt, user);
+        _burn(user, balanceOf(user));
+        emit ClosePosition(user, pnl);
     }
 
     // Internal

@@ -15,12 +15,25 @@ class OneXContract {
             const params = x.returnValues;
             return {
                 params: {
-                    sellTokenAddress: params.sellTokenAddress,
-                    sellTokenAmount: params.sellTokenAmount,
-                    buyTokenAddress: params.buyTokenAddress,
-                    leverageRatio: params.leverageRatio,
-                    minDelta: params.minSum,
-                    maxDelta: params.maxSum
+                    owner: params['0'],
+                    amount: params['1'],
+                    stopLoss: params['2'],
+                    takeProfit: params['3']
+                },
+                blockNumber: x.blockNumber,
+                transactionHash: x.transactionHash,
+            }
+        });
+    }
+
+    async getClosePositionEvents() {
+        const events = await getEvents(this.instance, 'ClosePosition');
+        return events.map(x => {
+            const params = x.returnValues;
+            return {
+                params: {
+                    owner: params['0'],
+                    pnl: params['1']
                 },
                 blockNumber: x.blockNumber,
                 transactionHash: x.transactionHash,

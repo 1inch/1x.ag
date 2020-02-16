@@ -1,6 +1,56 @@
 [
     {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
         "constant": true,
+        "inputs": [],
+        "name": "CORE",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "ONE_SPLIT",
+        "outputs": [
+            {
+                "internalType": "contract IOneSplit",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "POOL",
+        "outputs": [
+            {
+                "internalType": "contract ILendingPool",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
         "inputs": [
             {
                 "internalType": "contract IERC20",
@@ -17,7 +67,7 @@
             }
         ],
         "payable": false,
-        "stateMutability": "view",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -81,7 +131,7 @@
         "type": "function"
     },
     {
-        "constant": true,
+        "constant": false,
         "inputs": [
             {
                 "internalType": "contract IERC20",
@@ -98,13 +148,13 @@
             }
         ],
         "payable": false,
-        "stateMutability": "view",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "constant": true,
         "inputs": [],
-        "name": "core",
+        "name": "delegate",
         "outputs": [
             {
                 "internalType": "address",
@@ -147,21 +197,6 @@
         "type": "function"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "oneSplit",
-        "outputs": [
-            {
-                "internalType": "contract IOneSplit",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "constant": false,
         "inputs": [
             {
@@ -182,6 +217,16 @@
             {
                 "internalType": "uint256",
                 "name": "leverageRatio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "stopLossValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "takeProfitValue",
                 "type": "uint256"
             }
         ],
@@ -248,14 +293,60 @@
         "type": "function"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "pool",
+        "constant": false,
+        "inputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "collateral",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "debt",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "leverageRatio",
+                "type": "uint256"
+            }
+        ],
+        "name": "pnl",
         "outputs": [
             {
-                "internalType": "contract ILendingPool",
+                "internalType": "uint256",
                 "name": "",
-                "type": "address"
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "stopLoss",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "takeProfit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
         "payable": false,

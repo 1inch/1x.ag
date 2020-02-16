@@ -53,8 +53,10 @@ export class CreatePositionComponent implements OnInit {
         'DAI',
         'WBTC',
         'ZRX',
-        'MKR',
-        'tBTC'
+        'BAT',
+        'tBTC',
+        'REP',
+        'USDC',
     ];
 
     loading = true;
@@ -209,7 +211,9 @@ export class CreatePositionComponent implements OnInit {
                 this.payToken,
                 Number(this.leverageModel),
                 this.leverageProvider.name,
-                this._amountBN
+                this._amountBN,
+                Math.abs(Number(this.stopLossLimit)),
+                Math.abs(Number(this.takeProfitLimit))
             );
 
             this.transactionHash = transactionHash;
