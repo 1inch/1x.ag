@@ -16,9 +16,9 @@
                     <tr>
                         <th scope="col">Leverage Token</th>
                         <th scope="col">Leverage</th>
-                        <th scope="col">Profit</th>
-                        <th scope="col">Status</th>
                         <th scope="col">Stop Loss</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Profit</th>
                         <th scope="col">Take Profit</th>
                         <th scope="col"></th>
                     </tr>
@@ -27,10 +27,10 @@
                     <tr *ngFor="let position of positions">
                         <td>{{position.tokenName}}</td>
                         <td>{{position.leverage}}x</td>
-                        <td>{{position.profit}}</td>
-                        <td>{{position.status}}</td>
                         <td>${{position.stopLossUsd}}</td>
-                        <td>${{position.stopWinUsd}}</td>
+                        <td>{{position.status}}</td>
+                        <td>{{position.profit}}</td>
+                        <td>{{position.profit}}</td>
                         <td>
                             <button (click)="showChartDialog(position)" class="btn btn-success btn-sm mr-1">
                                 chart
