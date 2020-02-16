@@ -11,9 +11,13 @@ class TransactionQueue {
             async ({ queryParams, executeTransaction }) => {
 
                 this.pendingAddresses = queryParams.user;
-                const tx = await executeTransaction(queryParams);
-                console.log("closePositionFor: ", tx.transactionHash);
-                this.pendingAddresses = '';
+                try {
+                    const tx = await executeTransaction(queryParams);
+                    console.log("closePositionFor: ", tx.transactionHash);
+                    this.pendingAddresses = '';
+                } catch (e) {
+                    console.log("Failed to close position: ", e);
+                }
             },
             (err) => {
                 console.log("Failed to close position: ", err);
