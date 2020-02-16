@@ -53,8 +53,10 @@ export class CreatePositionComponent implements OnInit {
         'DAI',
         'WBTC',
         'ZRX',
-        'MKR',
-        'tBTC'
+        'BAT',
+        'tBTC',
+        'REP',
+        'USDC',
     ];
 
     loading = true;
