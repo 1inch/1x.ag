@@ -6,7 +6,7 @@ dataSources:
     name: Contract
     network: mainnet
     source:
-      address: "0xC9A4AEF09fD9ae835A0c60A0757C8dd748116781"
+      address: "0x971c52e04919c41b11e5e44dbdc264eccbcd8a22"
       abi: Contract
     mapping:
       kind: ethereum/events
@@ -19,8 +19,8 @@ dataSources:
         - name: Contract
           file: ./abis/Contract.json
       eventHandlers:
-        - event: OpenPosition(address,uint256,uint256,uint256)
+        - event: OpenPosition(indexed address,uint256,uint256,uint256)
           handler: handleOpenPosition
-        - event: ClosePosition(address)
+        - event: ClosePosition(indexed address,uint256)
           handler: handleClosePosition
       file: ./src/mapping.ts

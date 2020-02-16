@@ -60,10 +60,16 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "pnl",
+        "type": "uint256"
       }
     ],
     "name": "ClosePosition",
@@ -73,7 +79,7 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -87,13 +93,13 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "liquidationAmountMin",
+        "name": "stopLoss",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "liquidationAmountMax",
+        "name": "takeProfit",
         "type": "uint256"
       }
     ],
@@ -208,6 +214,26 @@
       }
     ],
     "name": "closePosition",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "newDelegate",
+        "type": "address"
+      }
+    ],
+    "name": "closePositionFor",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -376,12 +402,12 @@
       },
       {
         "internalType": "uint256",
-        "name": "liquidationAmountMin",
+        "name": "stopLoss",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "liquidationAmountMax",
+        "name": "takeProfit",
         "type": "uint256"
       }
     ],
